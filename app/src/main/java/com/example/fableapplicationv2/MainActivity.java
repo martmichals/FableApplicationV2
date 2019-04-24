@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static ArrayList<Farmer> searchResults;
     private static ArrayList<DocumentSnapshot> intermediary;
-    public static String TAG = "MainActivity";
+    public static String TAG = "MainActivity"; //Hehe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
