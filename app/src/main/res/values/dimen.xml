@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin50">50dp</dimen>
+    <dimen name="margin85">-85dp</dimen>
+    <dimen name="margin20">20dp</dimen>
+    <dimen name="margin15">15dp</dimen>
+    <dimen name="margin5">5dp</dimen>
+    <dimen name="text25">25dp</dimen>
+    <dimen name="text35">35dp</dimen>
+    <dimen name="text50">50dp</dimen>
+    <dimen name="text15">15dp</dimen>
+
+
+</resources>

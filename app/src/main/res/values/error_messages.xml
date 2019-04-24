@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Pop-up alert messages -->
+    <string name="okay">Okay</string>
+    <string name="accountCreationAlert">Error Creating Account</string>
+    <string name="emailAlreadyInUse">Email is already in use</string>
+    <string name="miscDatabaseError">Unknown error encountered</string>
+
+    <!-- Form error messages -->
+    <string name="requiredEntry">Required*</string>
+    <string name="emailNotValid">The email is invalid</string>
+    <string name="passwordTooShort">Password must be at least 8 characters long</string>
+    <string name="passwordTooLong">Password cannot surpass 20 characters in length</string>
+    <string name="passwordNoCapitals">Password must contain at least 1 capitalized letter</string>
+    <string name="passwordNoLowercase">Password must contain at least 1 lowercase letter</string>
+    <string name="passwordNoNumbers">Password must contain at least 1 number</string>
+    <string name="passwordNoMatch">Passwords entered do not match</string>
+
+    <string name="nameNoNumbers">Names cannot contain numbers</string>
+    <string name="onlyNumbers">Only input numbers in this field</string>
+    <string name="entryIncorrectLength">This entry is not the correct length</string>
+
+    <!-- Message to be displayed in toasts -->
+    <string name="logInFailure">Failed log in</string>
+</resources>

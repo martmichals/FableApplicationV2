@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "685117785518",
+    "firebase_url": "https://fableapplicationv2.firebaseio.com",
+    "project_id": "fableapplicationv2",
+    "storage_bucket": "fableapplicationv2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685117785518:android:3a3cd7af082e87cb",
+        "android_client_info": {
+          "package_name": "com.example.fableapplicationv2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685117785518-9fv9d5vm7ic8m0r8hq9ir6tiqq74v9e1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS0EC09qHqc2AUo3ceFs7VFtGUGE-BYBU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
