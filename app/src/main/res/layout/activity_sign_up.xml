@@ -174,7 +174,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin5"
-            android:background="@color/colorAccent"
+            android:background="@color/colorWhite"
             android:fontFamily="@font/light" />
 
 
@@ -253,7 +253,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin5"
-            android:background="@color/colorAccent"
+            android:background="@color/colorWhite"
             android:fontFamily="@font/light"
             android:visibility="visible" />
 

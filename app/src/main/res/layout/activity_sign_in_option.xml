@@ -4,24 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bkg"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".SignInOptionActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin15"
+        android:fontFamily="@font/sequel"
+        android:text="@string/logo"
+        android:textSize="@dimen/text50" />
+
     <Button
         android:id="@+id/idSignInButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin5"
+        android:background="@color/colorWhite"
+        android:fontFamily="@font/semibold"
         android:onClick="goToSignInOnClick"
-        android:text="@string/sign_in_button" />
+        android:text="@string/sign_in_button"
+        android:textSize="@dimen/text15" />
 
     <Button
         android:id="@+id/idSignUpButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin5"
+        android:background="@color/colorWhite"
+        android:fontFamily="@font/semibold"
         android:onClick="goToSignUpOnClick"
-        android:text="@string/sign_up_button" />
+        android:text="@string/sign_up_button"
+        android:textSize="@dimen/text15" />
 
 
 </LinearLayout>
