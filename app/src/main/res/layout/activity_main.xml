@@ -3,17 +3,148 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="@drawable/bkg_gradient"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
+    <TextView
+        android:id="@+id/idFableTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:onClick="logOffOnClick"
-        android:text="Log Off" />
+        android:layout_weight="1"
+        android:fontFamily="@font/sequel"
+        android:gravity="center"
+        android:text="@string/logo"
+        android:textSize="@dimen/text50"
+        android:visibility="visible" />
+
+
+    <LinearLayout
+        android:id="@+id/idSearchLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin20"
+        android:layout_marginTop="@dimen/margin20"
+        android:layout_marginRight="@dimen/margin20"
+        android:layout_marginBottom="@dimen/margin20"
+        android:layout_weight="40"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <SearchView
+            android:id="@+id/idSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin15"
+            android:iconifiedByDefault="false"
+            android:queryHint="Search" />
+
+        <TextView
+            android:id="@+id/idRadiusSpinnerLabelTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin5"
+            android:fontFamily="@font/regular"
+            android:text="Radius:"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"/>
+
+        <ScrollView
+            android:id="@+id/idSearchResultsScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/idSearchResultsLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/idFollowedLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin20"
+        android:layout_marginTop="@dimen/margin20"
+        android:layout_marginRight="@dimen/margin20"
+        android:layout_marginBottom="@dimen/margin20"
+        android:layout_weight="40"
+        android:orientation="vertical"
+        android:visibility="gone"></LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/idFeaturedLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin20"
+        android:layout_marginTop="@dimen/margin20"
+        android:layout_marginRight="@dimen/margin20"
+        android:layout_marginBottom="@dimen/margin20"
+        android:layout_weight="40"
+        android:orientation="vertical"
+        android:visibility="gone"></LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/idNavigationBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal">
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/semibold"
+            android:onClick="searchButtonOnClick"
+            android:text="SEARCH"
+            android:textSize="16dp" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/semibold"
+            android:onClick="followedButtonOnClick"
+            android:text="FOLLOWED"
+            android:textSize="16dp" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/semibold"
+            android:onClick="featuredButtonOnClick"
+            android:text="FEATURED"
+            android:textSize="16dp" />
+
+
+    </LinearLayout>
+
+
+    <!--<Button-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:onClick="logOffOnClick"-->
+    <!--android:text="Log Off" />-->
 
 </LinearLayout>
