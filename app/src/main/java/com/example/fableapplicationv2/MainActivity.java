@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar mRadiusSeekBar;
 
     // Use this to get updated radius selection
-    private int spinnerRadius;
+    private int seekBarRadius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         mRadiusSeekBar = (SeekBar) findViewById(R.id.radiusSeekBar);
         mRadiusTextView = (TextView) findViewById(R.id.idRadiusSeekBarLabelTextView);
         mRadiusTextView.setText(radiusLabel + mRadiusSeekBar.getProgress() + " mi");
-        spinnerRadius = mRadiusSeekBar.getProgress();
+        seekBarRadius = mRadiusSeekBar.getProgress();
 
 
         mSearchView = (SearchView) findViewById(R.id.idSearchView);
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                spinnerRadius = progress;
+                seekBarRadius = progress;
 
                 mRadiusTextView.setText(radiusLabel + progress + " mi");
             }
