@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.support.v7.widget.CardView;
 import android.widget.SearchView;
 import android.widget.SeekBar;
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static ArrayList<Farmer> searchResults;
     private static ArrayList<DocumentSnapshot> intermediary;
-    public static String TAG = "MainActivity";
+    public static String TAG = "MainActivity"; //Hehe
 
     private Context mContext;
 
