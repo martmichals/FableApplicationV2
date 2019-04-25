@@ -61,6 +61,8 @@
             android:text="Radius:"
             android:textColor="@color/colorPrimaryDark" />
 
+
+
         <ScrollView
             android:id="@+id/idSearchResultsScrollView"
             android:layout_marginTop="@dimen/margin15"
