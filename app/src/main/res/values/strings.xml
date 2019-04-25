@@ -24,4 +24,12 @@
     <string name="phone">Phone Number</string>
     <string name="bio">Bio</string>
     <string name="finish">Finished</string>
+
+    <string name="setupFarmerProfile">Set Up Farmer Profile</string>
+    <string name="editFarmerProfile">Edit Farmer Profile</string>
+
+    <string name="farmerSloganEditTextLabel">5 word or less farm slogan</string>
+    <string name="farmerBioEditTextLabel">A brief paragraph describing your farm</string>
+    <string name="farmerProduceLabel">Produce Sold</string>
+    <string name="done">Done</string>
 </resources>

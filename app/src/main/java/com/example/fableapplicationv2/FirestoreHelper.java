@@ -106,8 +106,6 @@ public class FirestoreHelper {
                 });
     }
 
-    // TODO: Add GPS Coordinate conversion to the user entered address
-
     /** Method in order to add a new farmer to the database
      * @param firstName : first name of the farmer
      * @param lastName : last name of the farmer
@@ -163,6 +161,7 @@ public class FirestoreHelper {
                 });
     }
 
+    // TODO : Add method to search for farm based on farm name
     // TODO : Add method to add additional farmer data
     // Produce sold
     // Farm Image

@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static ArrayList<Farmer> searchResults;
     private static ArrayList<DocumentSnapshot> intermediary;
-    public static String TAG = "MainActivity"; //Hehe
+    private static boolean isUserAFarmer;
+    public static String TAG = "MainActivity";
 
     private Context mContext;
 
@@ -127,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
         //Initializing the Firestore helper object
         firestoreHelper = new FirestoreHelper();
 
+        // TODO : Create a method to check if the user is a farmer or a consumer
+        // https://insights.stackoverflow.com/survey/2019?utm_source=so-owned&utm_medium=house-ads&utm_campaign=dev-survey-2019&utm_content=fastest-growing-lb
+
         //Used to debug the first searching function
         searchForFarmersInRadius(0.50);
     }
@@ -154,11 +158,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Checks user state, either stays on screen or launches log in process
     private void updateSystemState() {
-        if (firebaseUser != null) {
-            //Stay on the current screen
-        } else {
+        if (firebaseUser == null)
             goToSignInOptions();
-        }
     }
 
     //Method to search for farmers in a given radius
@@ -413,4 +414,7 @@ public class MainActivity extends AppCompatActivity {
         logOffOnClick(v);
     }
 
+
+    //TODO : Create a method to order Farmer search results based on their distance from the user
+    //TODO : Create a method to order Farmer search results based their review ratings
 }
