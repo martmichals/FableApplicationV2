@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.support.v7.widget.CardView;
 import android.widget.SearchView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,8 +50,13 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mSearchLinearLayout;
     private LinearLayout mFollowedLinearLayout;
     private LinearLayout mFeaturedLinearLayout;
+    private TextView mRadiusTextView;
     private SearchView mSearchView;
     private TextView mFableTitle;
+    private SeekBar mRadiusSeekBar;
+
+    // Use this to get updated radius selection
+    private int spinnerRadius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
         mSearchLinearLayout = (LinearLayout) findViewById(R.id.idSearchLayout);
         mFollowedLinearLayout = (LinearLayout) findViewById(R.id.idFollowedLayout);
         mFeaturedLinearLayout = (LinearLayout) findViewById(R.id.idFeaturedLayout);
+
+        final String radiusLabel = "Radius: ";
+        mRadiusSeekBar = (SeekBar) findViewById(R.id.radiusSeekBar);
+        mRadiusTextView = (TextView) findViewById(R.id.idRadiusSeekBarLabelTextView);
+        mRadiusTextView.setText(radiusLabel + mRadiusSeekBar.getProgress() + " mi");
+        spinnerRadius = mRadiusSeekBar.getProgress();
 
 
         mSearchView = (SearchView) findViewById(R.id.idSearchView);
@@ -86,6 +98,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
+            }
+        });
+
+        mRadiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                spinnerRadius = progress;
+
+                mRadiusTextView.setText(radiusLabel + progress + " mi");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 

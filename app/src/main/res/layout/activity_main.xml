@@ -41,23 +41,29 @@
             android:iconifiedByDefault="false"
             android:queryHint="Search" />
 
+
+
+        <SeekBar
+            android:id="@+id/radiusSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin15"
+            android:progress="15"
+            android:max="100"/>
+
         <TextView
-            android:id="@+id/idRadiusSpinnerLabelTextView"
+            android:id="@+id/idRadiusSeekBarLabelTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin5"
+            android:layout_marginLeft="@dimen/margin15"
             android:fontFamily="@font/regular"
             android:text="Radius:"
             android:textColor="@color/colorPrimaryDark" />
 
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100"/>
-
         <ScrollView
             android:id="@+id/idSearchResultsScrollView"
+            android:layout_marginTop="@dimen/margin15"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
