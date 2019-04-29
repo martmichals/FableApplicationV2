@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fruits">
+        <item>apple</item>
+        <item>apricot</item>
+        <item>avocado</item>
+        <item>banana</item>
+        <item>bell pepper</item>
+        <item>bilberry</item>
+        <item>blackberry</item>
+        <item>blackcurrant</item>
+        <item>blood orange</item>
+        <item>blueberry</item>
+        <item>boysenberry</item>
+        <item>breadfruit</item>
+        <item>canary melon</item>
+        <item>cantaloupe</item>
+        <item>cherimoya</item>
+        <item>cherry</item>
+        <item>chili pepper</item>
+        <item>clementine</item>
+        <item>cloudberry</item>
+        <item>coconut</item>
+        <item>cranberry</item>
+        <item>cucumber</item>
+        <item>currant</item>
+        <item>damson</item>
+        <item>date</item>
+        <item>dragonfruit</item>
+        <item>durian</item>
+        <item>eggplant</item>
+        <item>elderberry</item>
+        <item>feijoa</item>
+        <item>fig</item>
+        <item>goji berry</item>
+        <item>gooseberry</item>
+        <item>grape</item>
+        <item>grapefruit</item>
+        <item>guava</item>
+        <item>honeydew</item>
+        <item>huckleberry</item>
+        <item>jackfruit</item>
+        <item>jambul</item>
+        <item>jujube</item>
+        <item>kiwi fruit</item>
+        <item>kumquat</item>
+        <item>lemon</item>
+        <item>lime</item>
+        <item>loquat</item>
+        <item>lychee</item>
+        <item>mandarine</item>
+        <item>mango</item>
+        <item>mulberry</item>
+        <item>nectarine</item>
+        <item>nut</item>
+        <item>olive</item>
+        <item>orange</item>
+        <item>pamelo</item>
+        <item>papaya</item>
+        <item>passionfruit</item>
+        <item>peach</item>
+        <item>pear</item>
+        <item>persimmon</item>
+        <item>physalis</item>
+        <item>pineapple</item>
+        <item>plum</item>
+        <item>pomegranate</item>
+        <item>pomelo</item>
+        <item>purple mangosteen</item>
+        <item>quince</item>
+        <item>raisin</item>
+        <item>rambutan</item>
+        <item>raspberry</item>
+        <item>redcurrant</item>
+        <item>rock melon</item>
+        <item>salal berry</item>
+        <item>satsuma</item>
+        <item>star fruit</item>
+        <item>strawberry</item>
+        <item>tamarillo</item>
+        <item>tangerine</item>
+        <item>tomato</item>
+        <item>ugli fruit</item>
+        <item>watermelon</item>
+    </string-array>
+
+</resources>

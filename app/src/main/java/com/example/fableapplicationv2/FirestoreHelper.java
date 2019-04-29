@@ -20,8 +20,7 @@ import java.util.Map;
 
 public class FirestoreHelper {
     public final static String TAG = "Firestore Helper";
-    public final static String FARMER_COLLECTION = "farmers";
-    public final static String CONSUMER_COLLECTION = "consumers";
+    public final static String USER_COLLECTION = "users";
 
     public final static String NAME_KEY = "name";
     public final static String ADDRESS_KEY = "address";
@@ -64,7 +63,7 @@ public class FirestoreHelper {
      * @param email : email of the consumer
      * @param context : context from which the method is called from
      */
-    public void addNewConsumer(String firstName, String lastName, String streetAddress, String city,
+    public void addNewUser(String firstName, String lastName, String streetAddress, String city,
                                String zipCode, String phoneNumber, String state, String email,
                                Context context) {
         Map<String, Object> consumerDataDoc = new HashMap<>();
@@ -93,7 +92,7 @@ public class FirestoreHelper {
         nestedCoordinate.put(GPS_LONGITUDE_KEY, coordinates[1]);
         consumerDataDoc.put(GPS_COORDINATE_KEY, nestedCoordinate);
 
-        database.collection(CONSUMER_COLLECTION).document(Uid)
+        database.collection(USER_COLLECTION).document(Uid)
                 .set(consumerDataDoc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -105,61 +104,6 @@ public class FirestoreHelper {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error writing new consumer to the database", e);
-                    }
-                });
-    }
-
-    /** Method in order to add a new farmer to the database
-     * @param firstName : first name of the farmer
-     * @param lastName : last name of the farmer
-     * @param streetAddress : street address of the farmer
-     * @param city : city of the farmer
-     * @param zipCode : zip code of the farmer
-     * @param phoneNumber : phone number of the farmer
-     * @param state : state of residence for the farmer
-     * @param email : email of the farmer
-     */
-    public void addNewFarmer(String firstName, String lastName, String streetAddress, String city,
-                             String zipCode, String phoneNumber, String state, String email,
-                             Context context){
-        Map<String, Object> consumerDataDoc = new HashMap<>();
-        String Uid = user.getUid();
-
-        Map<String, Object> nestedName = new HashMap<>();
-        nestedName.put(FIRST_KEY, firstName);
-        nestedName.put(LAST_KEY, lastName);
-        consumerDataDoc.put(NAME_KEY, nestedName);
-
-        Map<String, Object> nestedAddress = new HashMap<>();
-        nestedAddress.put(STREET_ADDRESS_KEY, streetAddress);
-        nestedAddress.put(CITY_KEY, city);
-        nestedAddress.put(STATE_KEY, state);
-        nestedAddress.put(ZIP_CODE_KEY, zipCode);
-        consumerDataDoc.put(ADDRESS_KEY, nestedAddress);
-
-        consumerDataDoc.put(PHONE_NUMBER_KEY, phoneNumber);
-        consumerDataDoc.put(EMAIL_KEY, email);
-
-        //Attempts to convert address to GPS coordinates
-        double[] coordinates = getGPSCoordinatesFromAddress(context, (streetAddress + ", " + city
-                + ", " + state + ", " + zipCode));
-        Map<String, Object> nestedCoordinate = new HashMap<>();
-        nestedCoordinate.put(GPS_LATITUDE_KEY, coordinates[0]);
-        nestedCoordinate.put(GPS_LONGITUDE_KEY, coordinates[1]);
-        consumerDataDoc.put(GPS_COORDINATE_KEY, nestedCoordinate);
-
-        database.collection(FARMER_COLLECTION).document(Uid)
-                .set(consumerDataDoc)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "New farmer successfully added to the database");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing new farmer to the database", e);
                     }
                 });
     }
@@ -206,36 +150,19 @@ public class FirestoreHelper {
 
     /** Method in order to change the email of a user
      * @param email : new email of the user
-     * @param isUserConsumer : true if the user is a consumer, false if farmer
-     *                         helps determine proper collection to write to
      */
-    public void updateUserEmail(final String email, boolean isUserConsumer){
-        final String collection;
-        if(isUserConsumer)
-            collection = CONSUMER_COLLECTION;
-        else
-            collection = FARMER_COLLECTION;
-
-        //No listener for task completion
-        database.collection(collection).document(user.getUid())
+    public void updateUserEmail(final String email){
+        database.collection(FirestoreHelper.USER_COLLECTION).document(user.getUid())
                 .update(EMAIL_KEY, email);
     }
 
     /** Method to update the name of the user
      * @param firstName : new first name of the user
      * @param lastName : new last name of the user
-     * @param isUserConsumer : true if the user is a consumer, false if farmer
-     *                         helps determine proper collection to write to
      */
-    public void updateUserName(String firstName, String lastName, boolean isUserConsumer){
-        final String collection;
-        if(isUserConsumer)
-            collection = CONSUMER_COLLECTION;
-        else
-            collection = FARMER_COLLECTION;
-
+    public void updateUserName(String firstName, String lastName){
         //No listener for task completion
-        database.collection(collection).document(user.getUid())
+        database.collection(FirestoreHelper.USER_COLLECTION).document(user.getUid())
                 .update(
                         NAME_KEY + "." + FIRST_KEY, firstName,
                         NAME_KEY + "." + LAST_KEY, lastName
@@ -247,19 +174,10 @@ public class FirestoreHelper {
      * @param city : new city of the user
      * @param zipCode : new zip code of the user
      * @param state : new state of the user
-     * @param isUserConsumer : true if the user is a consumer, false if farmer
-     *                         helps determine proper collection to write to
      */
-    public void updateUserAddress(String streetAddress, String city, String zipCode, String state
-                                , boolean isUserConsumer){
-        final String collection;
-        if(isUserConsumer)
-            collection = CONSUMER_COLLECTION;
-        else
-            collection = FARMER_COLLECTION;
-
+    public void updateUserAddress(String streetAddress, String city, String zipCode, String state){
         //No listener for task completion
-        database.collection(collection).document(user.getUid())
+        database.collection(FirestoreHelper.USER_COLLECTION).document(user.getUid())
                 .update(
                         ADDRESS_KEY + "." + STREET_ADDRESS_KEY, streetAddress,
                         ADDRESS_KEY + "." + CITY_KEY, city,
@@ -270,18 +188,10 @@ public class FirestoreHelper {
 
     /** Method to update the phone number of the user
      * @param phoneNumber : new phone number for the user
-     * @param isUserConsumer : true if the user is a consumer, false if farmer
-     *                         helps determine proper collection to write to
      */
-    public void updateUserPhoneNumber(String phoneNumber, boolean isUserConsumer){
-        final String collection;
-        if(isUserConsumer)
-            collection = CONSUMER_COLLECTION;
-        else
-            collection = FARMER_COLLECTION;
-
+    public void updateUserPhoneNumber(String phoneNumber){
         //No listener for task completion
-        database.collection(collection).document(user.getUid())
+        database.collection(FirestoreHelper.USER_COLLECTION).document(user.getUid())
                 .update(PHONE_NUMBER_KEY, phoneNumber);
     }
 
