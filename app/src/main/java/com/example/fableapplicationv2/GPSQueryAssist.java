@@ -107,20 +107,22 @@ public class GPSQueryAssist {
                 });
     }
 
-    public static ArrayList<DocumentSnapshot> circularizeSquareResults(double radius, GeoPoint center){
-        ArrayList<DocumentSnapshot> documentsInCircle  = new ArrayList<>();
+    public static ArrayList<DocumentSnapshot> circularizeSquareResults(double radius, GeoPoint center) {
+        ArrayList<DocumentSnapshot> documentsInCircle = new ArrayList<>();
         double latitudeCenter = center.getLatitude();
         double longitudeCenter = center.getLongitude();
 
         String lat_path = FirestoreHelper.GPS_COORDINATE_KEY + "." + FirestoreHelper.GPS_LATITUDE_KEY;
         String long_path = FirestoreHelper.GPS_COORDINATE_KEY + "." + FirestoreHelper.GPS_LONGITUDE_KEY;
 
-        for(DocumentSnapshot snap: squareSearchResults){
-            double latDoc = snap.getDouble(lat_path);
-            double longDoc = snap.getDouble(long_path);
-            if(getMilesBtwGPSCoordinates(latitudeCenter, longitudeCenter, latDoc, longDoc) <= radius){
-                documentsInCircle.add(snap);
-                Log.d(TAG, "Added this user: " + snap.getString("name.first") + " " + snap.getString("name.last"));
+        if (squareSearchResults != null){
+            for (DocumentSnapshot snap : squareSearchResults) {
+                double latDoc = snap.getDouble(lat_path);
+                double longDoc = snap.getDouble(long_path);
+                if (getMilesBtwGPSCoordinates(latitudeCenter, longitudeCenter, latDoc, longDoc) <= radius) {
+                    documentsInCircle.add(snap);
+                    Log.d(TAG, "Added this user: " + snap.getString("name.first") + " " + snap.getString("name.last"));
+                }
             }
         }
 

@@ -44,7 +44,7 @@ public class FarmerEditProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "Running the onActivityResult method");
 
-        if(resultCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
             && data != null && data.getData() != null){
             mImageUri = data.getData();
 
