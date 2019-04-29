@@ -63,6 +63,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        executeAdditionalSetup();
+
+        //Initializing Firebase authentication
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        //Initializing the Firestore helper object
+        firestoreHelper = new FirestoreHelper();
+
+        //Gets the current user, updates the app state based on user
+        firebaseUser = firebaseAuth.getCurrentUser();
+        updateSystemState();
+
+        // TODO : Create a method to check if the user is a farmer or a consumer
+
+        //Used to debug the first searching function
+        searchForFarmersInRadius(0.50);
+        launchEditFarmerActivity();
+    }
+
+    private void launchEditFarmerActivity(){
+        Intent intent = new Intent(MainActivity.this, FarmerEditProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void executeAdditionalSetup(){
         // Get the application context
         mContext = getApplicationContext();
 
@@ -120,28 +145,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-        //Initializing Firebase authentication
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        //Initializing the Firestore helper object
-        firestoreHelper = new FirestoreHelper();
-
-        // TODO : Create a method to check if the user is a farmer or a consumer
-        // https://insights.stackoverflow.com/survey/2019?utm_source=so-owned&utm_medium=house-ads&utm_campaign=dev-survey-2019&utm_content=fastest-growing-lb
-
-        //Used to debug the first searching function
-        searchForFarmersInRadius(0.50);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        //Gets the current user, updates the app state based on user
-        firebaseUser = firebaseAuth.getCurrentUser();
-        updateSystemState();
+        //Anything to run after the onCreate
     }
 
     //Called on button press

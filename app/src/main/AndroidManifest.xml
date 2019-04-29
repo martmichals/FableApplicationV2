@@ -4,6 +4,7 @@
     package="com.example.fableapplicationv2">
     <!-- Added line in order to make sure the app has internet access if available -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"

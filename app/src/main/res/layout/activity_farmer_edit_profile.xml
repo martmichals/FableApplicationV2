@@ -19,6 +19,7 @@
         android:id="@+id/idFarmerProfileImage"
         android:layout_gravity="center"
         android:src="@drawable/test_profile_picture"
+        android:onClick="onImageSearch"
         android:layout_width="200dp"
         android:layout_height="200dp" />
 

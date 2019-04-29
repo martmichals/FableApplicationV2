@@ -139,7 +139,7 @@ public class DataVerification {
         if(phoneNumber.length() == 0)
             return context.getString(R.string.requiredEntry);
         else if(phoneNumber.length() != PHONE_NUMBER_LENGTH)
-            return context.getString(R.string.entryIncorrectLength);
+            return context.getString(R.string.phoneNumberIncorrectFormat);
         for(int i = 0; i < phoneNumber.length(); i++){
             if(!Character.isDigit(phoneNumber.charAt(i)))
                 return context.getString(R.string.onlyNumbers);

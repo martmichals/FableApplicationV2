@@ -43,11 +43,14 @@ public class FirestoreHelper {
     private FirebaseFirestore database;
     private FirebaseUser user;
 
+    private FirestoreHelperListener listener;
+
     public FirestoreHelper(){
         database = FirebaseFirestore.getInstance();
 
         FirebaseAuth myAuth = FirebaseAuth.getInstance();
         user = myAuth.getCurrentUser();
+        listener = null;
     }
 
     /** Method in order to add a new consumer to the database
@@ -169,6 +172,8 @@ public class FirestoreHelper {
     // Short Description
     // Farm Name
 
+
+
     /** Method to get the GPS coordinates from a given address in string form
      * @param context : context from which the method is called
      * @param completeAddress : the complete address the user enter, street address, zip, etc.
@@ -279,4 +284,6 @@ public class FirestoreHelper {
         database.collection(collection).document(user.getUid())
                 .update(PHONE_NUMBER_KEY, phoneNumber);
     }
+
+    public void setRequestListener(FirestoreHelperListener listener){this.listener = listener;}
 }
