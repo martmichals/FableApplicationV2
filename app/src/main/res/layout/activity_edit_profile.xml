@@ -32,7 +32,18 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:src="@drawable/test_profile_picture" />
+            android:src="@drawable/test_profile_picture"
+            android:onClick="onImageSearch"/>
+
+        <TextView
+            android:id="@+id/idSloganError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin5"
+            android:fontFamily="@font/semibold"
+            android:textColor="@color/colorError"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/idFarmSloganEditText"
@@ -89,7 +100,8 @@
             android:fontFamily="@font/semibold"
             android:text="@string/done"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/text15" />
+            android:textSize="@dimen/text15"
+            android:onClick="onDoneEditingButtonPress"/>
 
     </LinearLayout>
 </ScrollView>

@@ -88,11 +88,8 @@ public class MainActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         updateSystemState();
 
-        // TODO : Create a method to check if the user is a farmer or a consumer
-
         //Used to debug the first searching function
         searchForFarmersInRadius(0.50);
-        //launchEditFarmerActivity();
     }
 
     private void launchEditFarmerActivity() {
@@ -126,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Method to search for farmers in a given radius
     private void searchForFarmersInRadius(final double radius) {
-
         String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DocumentReference ref = FirebaseFirestore.getInstance().collection(FirestoreHelper.USER_COLLECTION).document(Uid);
         intermediary = null;
@@ -171,9 +167,12 @@ public class MainActivity extends AppCompatActivity {
             searchResults = new ArrayList<>();
             for (DocumentSnapshot snap : intermediary) {
                 FableUser user = new FableUser(snap);
-
-                searchResults.add(user);
-                Log.d(TAG, user.toString());
+                if(!(user.getUid().equals(firebaseUser.getUid()))) {
+                    searchResults.add(user);
+                    Log.d(TAG, user.toString());
+                }else{
+                    Log.d(TAG, "User found is the same as the current user");
+                }
             }
             intermediary = null;
         } else {
@@ -199,6 +198,8 @@ public class MainActivity extends AppCompatActivity {
                 mFeaturedLinearLayout.setVisibility(v.GONE);
             }
         }
+
+        launchEditFarmerActivity();
     }
 
     public void featuredButtonOnClick(View v) {

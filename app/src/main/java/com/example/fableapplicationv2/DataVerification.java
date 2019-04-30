@@ -206,14 +206,23 @@ public class DataVerification {
             return true;
     }
 
+    /**Method to check the slogan users are asked to enter for their seller profile
+     * @param slogan : the string slogan the user entered
+     * @return true if the slogan is 5 words or less, false if more
+     */
     public static boolean checkSellerSlogan(String slogan){
-        int numWords = 0;
+        if(slogan.length() == 0)
+            return true;
+
+        int numSpaces = 0;
         for(int i = 0; i < slogan.length(); i++){
             if(slogan.charAt(i) ==  SPACE && (i != slogan.length() - 1)){
-
+                numSpaces++;
             }
         }
 
-        return true;
+        if(numSpaces <= SLOGAN_WORD_LIMIT)
+            return true;
+        return false;
     }
 }
