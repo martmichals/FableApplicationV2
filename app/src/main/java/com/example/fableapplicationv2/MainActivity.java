@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private FirestoreHelper firestoreHelper;
 
-    private static ArrayList<Farmer> searchResults;
+    private static ArrayList<FableUser> searchResults;
     private static ArrayList<DocumentSnapshot> intermediary;
     private static boolean isUserAFarmer;
     public static String TAG = "MainActivity";
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     private void searchForFarmersInRadius(final double radius) {
 
         String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DocumentReference ref = FirebaseFirestore.getInstance().collection(FirestoreHelper.CONSUMER_COLLECTION).document(Uid);
+        DocumentReference ref = FirebaseFirestore.getInstance().collection(FirestoreHelper.USER_COLLECTION).document(Uid);
         intermediary = null;
 
         ref.get()
@@ -188,10 +188,10 @@ public class MainActivity extends AppCompatActivity {
         if (intermediary != null) {
             searchResults = new ArrayList<>();
             for (DocumentSnapshot snap : intermediary) {
-                Farmer farmer = new Farmer(snap);
+                FableUser user = new FableUser(snap);
 
-                searchResults.add(farmer);
-                Log.d(TAG, farmer.toString());
+                searchResults.add(user);
+                Log.d(TAG, user.toString());
             }
             intermediary = null;
         } else {

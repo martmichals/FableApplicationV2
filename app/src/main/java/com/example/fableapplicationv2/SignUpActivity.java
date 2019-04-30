@@ -29,8 +29,6 @@ public class SignUpActivity extends AppCompatActivity {
     public final static String TAG = "SignUpActivity";
     public static boolean isFormCorrectlyCompleted;
 
-    public static final String CONSUMER = "Consumer";
-
     //Firebase objects
     private FirebaseAuth firebaseAuth;
 
@@ -68,15 +66,8 @@ public class SignUpActivity extends AppCompatActivity {
         String state = stateSpinner.getSelectedItem().toString();
         String email = emailEditText.getText().toString();
 
-        String userType = userTypeSpinner.getSelectedItem().toString();
-        if (userType.equalsIgnoreCase(CONSUMER)) {
-            helper.addNewConsumer(firstName, lastName, streetAddress, city, zipCode, phoneNumber,
-                    state, email, getApplicationContext());
-        }
-        else {
-            helper.addNewFarmer(firstName, lastName, streetAddress, city, zipCode,
+        helper.addNewUser(firstName, lastName, streetAddress, city, zipCode,
                     phoneNumber, state, email, getApplicationContext());
-        }
     }
 
     //Method to create a firebase account

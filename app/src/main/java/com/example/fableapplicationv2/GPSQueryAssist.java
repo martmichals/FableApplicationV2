@@ -35,7 +35,7 @@ public class GPSQueryAssist {
         listener = null;
     }
 
-    /** Method to get all the farmers in a box, centered
+    /** Method to get all the sellers in a box, centered
      * @param radius : radius of the circle to search in
      * @param center : center of the box to search in
      * @return
@@ -44,7 +44,7 @@ public class GPSQueryAssist {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
         double squareSideLengthMiles = radius * 2;
-        CollectionReference farmerCollectionReference = database.collection(FirestoreHelper.FARMER_COLLECTION);
+        CollectionReference reference = database.collection(FirestoreHelper.USER_COLLECTION);
         double centerLat = center.getLatitude();
         double centerLong = center.getLongitude();
         double offsetLat = (squareSideLengthMiles / 2) * ONE_MILE_LAT;
@@ -53,9 +53,9 @@ public class GPSQueryAssist {
         double[] bottomLeftPoint = {centerLat - offsetLat, centerLong - offsetLong};
         double[] topRightPoint = {centerLat + offsetLat, centerLong + offsetLong};
 
-        Query queryLat = farmerCollectionReference.whereGreaterThan("coordinates.lat", bottomLeftPoint[0])
+        Query queryLat = reference.whereGreaterThan("coordinates.lat", bottomLeftPoint[0])
                 .whereLessThan("coordinates.lat", topRightPoint[0]);
-        Query queryLong = farmerCollectionReference.whereGreaterThan("coordinates.long", bottomLeftPoint[1])
+        Query queryLong = reference.whereGreaterThan("coordinates.long", bottomLeftPoint[1])
                 .whereLessThan("coordinates.long", topRightPoint[1]);
 
         latitudeSnapshots = null;
