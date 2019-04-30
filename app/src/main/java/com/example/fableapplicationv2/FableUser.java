@@ -3,6 +3,7 @@ package com.example.fableapplicationv2;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class FableUser {
+    private String Uid;
     private String firstName;
     private String lastName;
     private String email;
@@ -15,6 +16,7 @@ public class FableUser {
     private double longitude;
 
     public FableUser(){
+        Uid = "";
         firstName = "";
         lastName = "";
         email = "";
@@ -27,8 +29,9 @@ public class FableUser {
         longitude = 0;
     }
 
-    public FableUser(String firstName, String lastName, String email, String phoneNumber, String streetAddress,
+    public FableUser(String Uid, String firstName, String lastName, String email, String phoneNumber, String streetAddress,
                      String city, String state, String zipCode, double latitude, double longitude){
+        this.Uid = Uid;
         this.firstName = firstName;
         this.lastName = lastName;
 
@@ -45,6 +48,7 @@ public class FableUser {
     }
 
     public FableUser(DocumentSnapshot snapshot){
+        this.Uid = snapshot.getId();
         this.firstName = snapshot.getString(FirestoreHelper.NAME_KEY + "." + FirestoreHelper.FIRST_KEY);
         this.lastName = snapshot.getString(FirestoreHelper.NAME_KEY + "." + FirestoreHelper.LAST_KEY);
 
@@ -63,7 +67,8 @@ public class FableUser {
     @Override
     public String toString(){
         String str = "Farmer Object" + "\n";
-        str += "User: " + email + "\n";
+        str+= "Uid: " + Uid + "\n";
+        str+= "User: " + email + "\n";
         str+= "Phone Number: " + phoneNumber + "\n";
         str+= "First Name: " + firstName + "\n";
         str+= "Last Name: " + lastName + "\n";
@@ -75,6 +80,8 @@ public class FableUser {
         str+= "Long: " + longitude + "\n";
         return str;
     }
+
+    public String getUid(){return Uid;}
 
     public String getEmail(){
         return email;

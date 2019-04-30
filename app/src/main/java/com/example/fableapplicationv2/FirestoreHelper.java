@@ -52,15 +52,15 @@ public class FirestoreHelper {
         listener = null;
     }
 
-    /** Method in order to add a new consumer to the database
-     * @param firstName : first name of the consumer
-     * @param lastName : last name of the consumer
-     * @param streetAddress : street address of the consumer
-     * @param city : city of the consumer
-     * @param zipCode : zip code of the consumer
-     * @param phoneNumber : phone number of the consumer
-     * @param state : state of residence for the consumer
-     * @param email : email of the consumer
+    /** Method in order to add a new user to the database
+     * @param firstName : first name of the user
+     * @param lastName : last name of the user
+     * @param streetAddress : street address of the user
+     * @param city : city of the user
+     * @param zipCode : zip code of the user
+     * @param phoneNumber : phone number of the user
+     * @param state : state of residence for the user
+     * @param email : email of the user
      * @param context : context from which the method is called from
      */
     public void addNewUser(String firstName, String lastName, String streetAddress, String city,
@@ -110,13 +110,6 @@ public class FirestoreHelper {
 
     // TODO : Add method to search for farm based on farm name
     // TODO : Add method to add additional farmer data
-    // Produce sold
-    // Farm Image
-    // Farm Bio
-    // Short Description
-    // Farm Name
-
-
 
     /** Method to get the GPS coordinates from a given address in string form
      * @param context : context from which the method is called
@@ -125,7 +118,6 @@ public class FirestoreHelper {
      */
     public double[] getGPSCoordinatesFromAddress(Context context, String completeAddress){
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-        Address gatheredAddress = null;
         List<Address> addresses = null;
 
         try {
@@ -133,7 +125,7 @@ public class FirestoreHelper {
         } catch (IOException e) {
             Log.e(TAG, "IO Exception exncountered when converting address from location name");
         }
-        gatheredAddress = addresses.get(0);
+        Address gatheredAddress = addresses.get(0);
         double latitude = gatheredAddress.getLatitude();
         double longitude = gatheredAddress.getLongitude();
         double[] gpsCoordinates = {latitude, longitude};

@@ -12,10 +12,12 @@ public class DataVerification {
     public static final int PASSWORD_NUMBERS_REQUIRED = 1;
     public static final int ZIP_CODE_LENGTH = 5;
     public static final int PHONE_NUMBER_LENGTH = 11;
+    public static final int SLOGAN_WORD_LIMIT = 5;
 
     public static final String TAG = "DataVerification";
     public static final String EMAIL_SYMBOL = "@";
     public static final String DOT = ".";
+    public static final char SPACE = ' ';
 
     /** Method to check email validity
      * @return null   -> email is valid
@@ -202,5 +204,16 @@ public class DataVerification {
             return false;
         else
             return true;
+    }
+
+    public static boolean checkSellerSlogan(String slogan){
+        int numWords = 0;
+        for(int i = 0; i < slogan.length(); i++){
+            if(slogan.charAt(i) ==  SPACE && (i != slogan.length() - 1)){
+
+            }
+        }
+
+        return true;
     }
 }
