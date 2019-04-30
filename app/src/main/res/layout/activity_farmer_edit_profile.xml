@@ -1,83 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/bkg_gradient"
-    tools:context=".FarmerEditProfileActivity">
+    android:clipToPadding="false">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bold"
-        android:text="@string/setupFarmerProfile"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/text35" />
-
-    <ImageView
-        android:id="@+id/idFarmerProfileImage"
-        android:layout_gravity="center"
-        android:src="@drawable/test_profile_picture"
-        android:onClick="onImageSearch"
-        android:layout_width="200dp"
-        android:layout_height="200dp" />
-
-    <EditText
-        android:id="@+id/idFarmSloganEditText"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin5"
-        android:layout_marginBottom="@dimen/margin5"
-        android:background="@drawable/custom_edit_text"
-        android:ems="10"
-        android:fontFamily="@font/light"
-        android:hint="@string/farmerSloganEditTextLabel"
-        android:padding="@dimen/margin15"
-        android:visibility="visible" />
-
-
-    <EditText
-        android:id="@+id/idShortFarmDescriptionEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin5"
-        android:layout_marginBottom="@dimen/margin5"
-        android:background="@drawable/custom_edit_text"
-        android:ems="10"
-        android:fontFamily="@font/light"
-        android:hint="@string/farmerBioEditTextLabel"
-        android:padding="@dimen/margin15"
-        android:visibility="visible"
-        android:lines="5"
-        android:minLines="5"
-        android:maxLines="10"
-        android:gravity="top|left"
-        android:scrollbars="vertical"/>
-    <!-- Bottom 4 lines control # lines, and cursor gravity -->
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin20"
         android:layout_marginTop="@dimen/margin20"
-        android:layout_marginBottom="@dimen/margin5"
-        android:fontFamily="@font/semibold"
-        android:gravity="center"
-        android:text="@string/farmerProduceLabel"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/text25"
-        android:visibility="visible" />
+        android:layout_marginRight="@dimen/margin20"
+        android:layout_marginBottom="@dimen/margin20"
+        android:orientation="vertical"
+        tools:context=".FarmerEditProfileActivity">
 
-    <Button
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin5"
-        android:layout_marginBottom="@dimen/margin50"
-        android:fontFamily="@font/semibold"
-        android:text="@string/done"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/text15" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin5"
+            android:fontFamily="@font/bold"
+            android:text="Profile"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text35" />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/idFarmerProfileImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/test_profile_picture" />
+
+        <EditText
+            android:id="@+id/idFarmSloganEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin5"
+            android:background="@drawable/custom_edit_text"
+            android:ems="10"
+            android:fontFamily="@font/light"
+            android:hint="@string/farmerSloganEditTextLabel"
+            android:padding="@dimen/margin15"
+            android:visibility="visible" />
+
+
+        <EditText
+            android:id="@+id/idShortFarmDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin5"
+            android:background="@drawable/custom_edit_text"
+            android:ems="10"
+            android:fontFamily="@font/light"
+            android:gravity="top|left"
+            android:hint="@string/farmerBioEditTextLabel"
+            android:lines="5"
+            android:maxLines="10"
+            android:minLines="5"
+            android:padding="@dimen/margin15"
+            android:scrollbars="vertical"
+            android:visibility="visible" />
+        <!-- Bottom 4 lines control # lines, and cursor gravity -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin20"
+            android:layout_marginBottom="@dimen/margin5"
+            android:fontFamily="@font/semibold"
+            android:gravity="center"
+            android:text="@string/farmerProduceLabel"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text25"
+            android:visibility="visible" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin50"
+            android:fontFamily="@font/semibold"
+            android:text="@string/done"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text15" />
+
+    </LinearLayout>
+</ScrollView>

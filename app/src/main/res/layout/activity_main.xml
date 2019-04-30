@@ -131,7 +131,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/semibold"
             android:onClick="followedButtonOnClick"
-            android:text="FOLLOWED"
+            android:text="LIST ITEM"
             android:textSize="16dp" />
 
         <Button
