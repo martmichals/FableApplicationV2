@@ -65,9 +65,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        xmlHandler = new MainActivityXMLHandler();
+        mContext = getApplicationContext(); // Get the application context
+        mFableTitle = (TextView) findViewById(R.id.idFableTitle);
+        mSearchResultsLinearLayout = (LinearLayout) findViewById(R.id.idSearchResultsLinearLayout);
+        mSearchLinearLayout = (LinearLayout) findViewById(R.id.idSearchLayout);
+        mFollowedLinearLayout = (LinearLayout) findViewById(R.id.idFollowedLayout);
+        mFeaturedLinearLayout = (LinearLayout) findViewById(R.id.idFeaturedLayout);
+        mRadiusSeekBar = (SeekBar) findViewById(R.id.radiusSeekBar);
+        mRadiusTextView = (TextView) findViewById(R.id.idRadiusSeekBarLabelTextView);
+        mSearchView = (SearchView) findViewById(R.id.idSearchView);
 
-        executeAdditionalSetup();
+        xmlHandler = new MainActivityXMLHandler(mContext, mFableTitle, mSearchResultsLinearLayout, mSearchLinearLayout,
+                mFollowedLinearLayout, mFeaturedLinearLayout, mRadiusSeekBar, mRadiusTextView, mSearchView);
 
         //Initializing Firebase authentication
         firebaseAuth = FirebaseAuth.getInstance();
@@ -89,33 +98,6 @@ public class MainActivity extends AppCompatActivity {
     private void launchEditFarmerActivity() {
         Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
         startActivity(intent);
-    }
-
-    private void executeAdditionalSetup() {
-        // Get the application context
-        mContext = getApplicationContext();
-
-        mFableTitle = (TextView) findViewById(R.id.idFableTitle);
-
-        // Get the widget references from XML layout
-        mSearchResultsLinearLayout = (LinearLayout) findViewById(R.id.idSearchResultsLinearLayout);
-        mSearchLinearLayout = (LinearLayout) findViewById(R.id.idSearchLayout);
-        mFollowedLinearLayout = (LinearLayout) findViewById(R.id.idFollowedLayout);
-        mFeaturedLinearLayout = (LinearLayout) findViewById(R.id.idFeaturedLayout);
-
-        final String radiusLabel = "Radius: ";
-        mRadiusSeekBar = (SeekBar) findViewById(R.id.radiusSeekBar);
-        mRadiusTextView = (TextView) findViewById(R.id.idRadiusSeekBarLabelTextView);
-        mRadiusTextView.setText(radiusLabel + mRadiusSeekBar.getProgress() + " mi");
-        seekBarRadius = mRadiusSeekBar.getProgress();
-
-
-        mSearchView = (SearchView) findViewById(R.id.idSearchView);
-        // https://android--code.blogspot.com/2015/12/android-how-to-create-cardview.html
-
-        xmlHandler.handleXML(mContext, mFableTitle, mSearchResultsLinearLayout, mSearchLinearLayout,
-                mFollowedLinearLayout, mFeaturedLinearLayout, mRadiusSeekBar, mRadiusTextView,
-                seekBarRadius, mSearchView);
     }
 
     @Override

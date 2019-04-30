@@ -22,7 +22,6 @@ import java.util.List;
 
 public class MainActivityXMLHandler extends AppCompatActivity {
     private Context mContext;
-
     private LinearLayout mSearchResultsLinearLayout;
     private LinearLayout mSearchLinearLayout;
     private LinearLayout mFollowedLinearLayout;
@@ -31,19 +30,13 @@ public class MainActivityXMLHandler extends AppCompatActivity {
     private SearchView mSearchView;
     private TextView mFableTitle;
     private SeekBar mRadiusSeekBar;
+    final String radiusLabel = "Radius: ";
+    private int seekBarRadius; // Use this to store updated radius selection
 
-    // Use this to get updated radius selection
-    private int seekBarRadius;
-
-    public MainActivityXMLHandler() {
-
-    }
-
-
-    public void handleXML(Context aContext, TextView aFableTitle, LinearLayout aSearchResultsLinearLayout,
-                          LinearLayout aSearchLinearLayout, LinearLayout aFollowedLinearLayout,
-                          LinearLayout aFeaturedLinearLayout, SeekBar aRadiusSeekBar,
-                          TextView aRadiusTextView, int aSeekBarRadius, SearchView aSearchView) {
+    public MainActivityXMLHandler(Context aContext, TextView aFableTitle, LinearLayout aSearchResultsLinearLayout,
+                                  LinearLayout aSearchLinearLayout, LinearLayout aFollowedLinearLayout,
+                                  LinearLayout aFeaturedLinearLayout, SeekBar aRadiusSeekBar,
+                                  TextView aRadiusTextView, SearchView aSearchView) {
         // Get the application context
         mContext = aContext;
         mFableTitle = aFableTitle;
@@ -53,13 +46,18 @@ public class MainActivityXMLHandler extends AppCompatActivity {
         mSearchLinearLayout = aSearchLinearLayout;
         mFollowedLinearLayout = aFollowedLinearLayout;
         mFeaturedLinearLayout = aFeaturedLinearLayout;
-
-        final String radiusLabel = "Radius: ";
+        mSearchView = aSearchView;
         mRadiusSeekBar = aRadiusSeekBar;
         mRadiusTextView = aRadiusTextView;
-        seekBarRadius = aSeekBarRadius;
+        mRadiusTextView.setText(radiusLabel + mRadiusSeekBar.getProgress() + " mi");
+        seekBarRadius = mRadiusSeekBar.getProgress();
 
-        mSearchView = aSearchView;
+        setListeners();
+    }
+
+
+    public void setListeners() {
+
         // https://android--code.blogspot.com/2015/12/android-how-to-create-cardview.html
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -80,7 +78,6 @@ public class MainActivityXMLHandler extends AppCompatActivity {
         });
 
         mRadiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 seekBarRadius = progress;
@@ -116,6 +113,8 @@ public class MainActivityXMLHandler extends AppCompatActivity {
     public void gatherQueryResults(String aQuery) {
         createCards(aQuery);
     }
+
+    // https://android--code.blogspot.com/2015/12/android-how-to-create-cardview.html
 
     @SuppressLint("ResourceType")
     public void createCard(String aFarmName, String aFarmDescription, Double aDistanceAway, ImageView aProfilePicture) {
