@@ -20,7 +20,7 @@
     <string name="onlyNumbers">Only input numbers in this field</string>
     <string name="entryIncorrectLength">This entry is not the correct length</string>
     <string name="phoneNumberIncorrectFormat">Phone number format: 1XXXYYYXXXX</string>
-    <string name="sloganError">The slogan must be empty OR 5 words or less</string>
+    <string name="sloganError">Slogan cannot exceed 5 words</string>
 
     <!-- Message to be displayed in toasts -->
     <string name="logInFailure">Failed log in</string>

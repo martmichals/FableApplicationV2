@@ -216,13 +216,14 @@ public class DataVerification {
 
         int numSpaces = 0;
         for(int i = 0; i < slogan.length(); i++){
-            if(slogan.charAt(i) ==  SPACE && (i != slogan.length() - 1)){
+            if(slogan.charAt(i) == SPACE && (i != slogan.length() - 1)){
                 numSpaces++;
             }
         }
 
-        if(numSpaces <= SLOGAN_WORD_LIMIT)
+        if(numSpaces < SLOGAN_WORD_LIMIT)
             return true;
+
         return false;
     }
 }

@@ -116,7 +116,6 @@ public class SignUpActivity extends AppCompatActivity {
         firstNameEditText = findViewById(R.id.idFirstNameEditText);
         lastNameEditText = findViewById(R.id.idLastNameEditText);
 
-        userTypeSpinner = findViewById(R.id.idUserTypeSpinner);
         String[] userTypes = getResources().getStringArray(R.array.userTypes);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item,

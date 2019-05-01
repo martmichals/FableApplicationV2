@@ -43,6 +43,7 @@
             android:layout_marginBottom="@dimen/margin5"
             android:fontFamily="@font/semibold"
             android:textColor="@color/colorError"
+            android:text="@string/sloganError"
             android:visibility="gone" />
 
         <EditText
@@ -89,6 +90,16 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text25"
             android:visibility="visible" />
+
+        <ProgressBar
+            android:id="@+id/idUploadingProgressBar"
+            android:indeterminateOnly="true"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:minHeight="50dp"
+            android:maxHeight="55dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <Button
             style="@style/Widget.AppCompat.Button.Borderless"

@@ -169,15 +169,6 @@
             android:text="@string/iAmA"
             android:textColor="@color/colorPrimaryDark" />
 
-        <Spinner
-            android:id="@+id/idUserTypeSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin5"
-            android:background="@color/colorWhite"
-            android:fontFamily="@font/light" />
-
-
         <TextView
             android:id="@+id/idStreetAddressError"
             android:layout_width="match_parent"
