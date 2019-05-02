@@ -35,8 +35,9 @@ import java.util.List;
 
 // TODO: Manage all the activities being created, pop off repeats
 public class MainActivity extends AppCompatActivity {
+    private static MainActivityXMLHandler xmlHandler;
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
+    private static FirebaseUser firebaseUser;
     private FirestoreHelper firestoreHelper;
 
     private static ArrayList<FableUser> searchResults;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Context mContext;
 
-    MainActivityXMLHandler xmlHandler;
+    //MainActivityXMLHandler xmlHandler;
 
     private LinearLayout mSearchResultsLinearLayout;
     private LinearLayout mSearchLinearLayout;
@@ -88,8 +89,11 @@ public class MainActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         updateSystemState();
 
+        // TODO : Create a method to check if the user is a farmer or a consumer
+
         //Used to debug the first searching function
-        searchForFarmersInRadius(0.50);
+        //searchForFarmersInRadius(0.50);
+        //launchEditFarmerActivity();
     }
 
     private void launchEditFarmerActivity() {
@@ -122,7 +126,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Method to search for farmers in a given radius
-    private void searchForFarmersInRadius(final double radius) {
+    private static void searchForFarmersInRadius(final double radius) {
+
         String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DocumentReference ref = FirebaseFirestore.getInstance().collection(FirestoreHelper.USER_COLLECTION).document(Uid);
         intermediary = null;
@@ -162,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Converting the DocumentSnapshots dumped into the intermediary to Farmers
-    private void convertIntermediariesToFarmers() {
+    private static void convertIntermediariesToFarmers() {
         if (intermediary != null) {
             searchResults = new ArrayList<>();
             for (DocumentSnapshot snap : intermediary) {
@@ -178,6 +183,11 @@ public class MainActivity extends AppCompatActivity {
         } else {
             searchResults = null;
         }
+    }
+
+    public static void submitQuery(String aQuery, double aSeekBarRadius) {
+        searchForFarmersInRadius(aSeekBarRadius);
+        //xmlHandler.createCards(aQuery, searchResults);
     }
 
     public void searchButtonOnClick(View v) {
