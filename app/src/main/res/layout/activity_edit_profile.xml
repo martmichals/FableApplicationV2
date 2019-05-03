@@ -19,6 +19,7 @@
         tools:context=".FarmerEditProfileActivity">
 
         <TextView
+            android:id="@+id/idProfileTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin5"
@@ -33,7 +34,8 @@
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:src="@drawable/test_profile_picture"
-            android:onClick="onImageSearch"/>
+            android:onClick="onImageSearch"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/idSloganError"
@@ -47,7 +49,7 @@
             android:visibility="gone" />
 
         <EditText
-            android:id="@+id/idFarmSloganEditText"
+            android:id="@+id/idSloganEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin5"
@@ -57,11 +59,11 @@
             android:fontFamily="@font/light"
             android:hint="@string/farmerSloganEditTextLabel"
             android:padding="@dimen/margin15"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
 
         <EditText
-            android:id="@+id/idShortFarmDescriptionEditText"
+            android:id="@+id/idShortDescriptionEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin5"
@@ -76,10 +78,11 @@
             android:minLines="5"
             android:padding="@dimen/margin15"
             android:scrollbars="vertical"
-            android:visibility="visible" />
+            android:visibility="gone"/>
         <!-- Bottom 4 lines control # lines, and cursor gravity -->
 
         <TextView
+            android:id="@+id/idProduceListingTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin20"
@@ -102,6 +105,7 @@
             android:visibility="gone"/>
 
         <Button
+            android:id="@+id/idDoneEditingButton"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,10 +113,10 @@
             android:layout_marginTop="@dimen/margin5"
             android:layout_marginBottom="@dimen/margin50"
             android:fontFamily="@font/semibold"
+            android:onClick="onDoneEditingButtonPress"
             android:text="@string/done"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/text15"
-            android:onClick="onDoneEditingButtonPress"/>
+            android:textSize="@dimen/text15" />
 
     </LinearLayout>
 </ScrollView>
