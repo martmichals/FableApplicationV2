@@ -226,4 +226,14 @@ public class DataVerification {
 
         return false;
     }
+
+    /**Method to check that the string is not length zero
+     * @param text : string to check
+     * @return true if satisfies condition, false if does not
+     */
+    public static boolean checkFilled(String text){
+        if(text.length() == 0)
+            return false;
+        return true;
+    }
 }

@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private FirestoreHelper firestoreHelper;
 
     private static ArrayList<FableUser> searchResults;
+    private static FableUser currentUser;
     private static ArrayList<DocumentSnapshot> intermediary;
     public static String TAG = "MainActivity";
 
@@ -87,12 +88,29 @@ public class MainActivity extends AppCompatActivity {
         //Gets the current user, updates the app state based on user
         firebaseUser = firebaseAuth.getCurrentUser();
         updateSystemState();
+        fillCurrentUser();
 
         //Used to debug the first searching function
-        //searchForFarmersInRadius(0.50);
         //launchEditFarmerActivity();
     }
 
+    private void fillCurrentUser(){
+        DocumentReference ref = FirebaseFirestore.getInstance()
+                .collection(FirestoreHelper.USER_COLLECTION)
+                .document(firebaseUser.getUid());
+        ref.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            currentUser = new FableUser(document);
+                        } else {
+                            Log.d(TAG, "Getting the user failed", task.getException());
+                        }
+                    }
+                });
+    }
 
     /** IMPORTANT TO NOTE:
      *  Whenever launching the edit profile activity, you have to pack the intent with:
@@ -104,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void launchEditFarmerActivity() {
         Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
-        intent.putExtra("isEditProfileIntent", false);
+        intent.putExtra("isEditProfileIntent", true);
         startActivity(intent);
     }
 
@@ -133,48 +151,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Method to search for farmers in a given radius
-    private static void searchForFarmersInRadius(final double radius) {
-
-        String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DocumentReference ref = FirebaseFirestore.getInstance().collection(FirestoreHelper.USER_COLLECTION).document(Uid);
+    private static void searchForUsersInRadius(final String produceQuery, final double radius, final GeneralListener listener) {
+        Log.d(TAG, "Running search function");
+        DocumentSnapshot document = currentUser.getDoc();
         intermediary = null;
 
-        ref.get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                final GeoPoint center = new GeoPoint(document.getDouble("coordinates.lat"),
-                                        document.getDouble("coordinates.long"));
+        final GeoPoint center = new GeoPoint(document.getDouble("coordinates.lat"),
+                document.getDouble("coordinates.long"));
 
-                                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                    final GPSQueryAssist queryAssist = new GPSQueryAssist();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            final GPSQueryAssist queryAssist = new GPSQueryAssist();
 
-                                    queryAssist.getLocationsInSquare(radius, center);
-                                    queryAssist.setGPSQueryListener(new GPSQueryAssistListener() {
-                                        @Override
-                                        public void onSearchComplete() {
-                                            intermediary = queryAssist.circularizeSquareResults(radius, center);
-                                            convertIntermediariesToFarmers();
-                                        }
-                                    });
-                                }
-                            } else {
-                                Log.d(TAG, "No such document");
-                            }
-                        } else {
-                            Log.d(TAG, "get failed with ", task.getException());
-                        }
-                    }
-                });
-
+            queryAssist.getLocationsInSquare(radius, center);
+            queryAssist.setGPSQueryListener(new GPSQueryAssistListener() {
+                @Override
+                public void onSearchComplete() {
+                    intermediary = queryAssist.circularizeSquareResults(radius, center);
+                    convertIntermediariesToUsers();
+                    filterIntermediaries(produceQuery);
+                    listener.onSuccess();
+                }
+            });
+        }
     }
 
-    //Converting the DocumentSnapshots dumped into the intermediary to Farmers
-    private static void convertIntermediariesToFarmers() {
+    //Converting the DocumentSnapshots dumped into the intermediary to Users
+    private static void convertIntermediariesToUsers() {
         if (intermediary != null) {
             searchResults = new ArrayList<>();
             for (DocumentSnapshot snap : intermediary) {
@@ -192,9 +194,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void submitQuery(String aQuery, double aSeekBarRadius) {
-        searchForFarmersInRadius(aSeekBarRadius);
-        //xmlHandler.createCards(aQuery, searchResults);
+    private static void filterIntermediaries(String query){
+
+    }
+
+    public static void submitQuery(final String aQuery, double aSeekBarRadius) {
+        searchForUsersInRadius(aQuery, aSeekBarRadius, new GeneralListener() {
+            @Override
+            public void onSuccess() {
+                //On search success
+                //xmlHandler.createCards(aQuery, searchResults);
+            }
+
+            @Override
+            public void onFail() {
+                // The search failed
+            }
+        });
     }
 
     public void searchButtonOnClick(View v) {
@@ -227,6 +243,9 @@ public class MainActivity extends AppCompatActivity {
 //            mFollowedLinearLayout.setVisibility(v.GONE);
 //        }
         // DELETE LATER
-        logOffOnClick(v);
+
+//        logOffOnClick(v);
+        int rad = mRadiusSeekBar.getProgress();
+        submitQuery("", rad);
     }
 }

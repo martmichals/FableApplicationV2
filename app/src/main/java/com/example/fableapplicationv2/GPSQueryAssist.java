@@ -44,7 +44,7 @@ public class GPSQueryAssist {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
         double squareSideLengthMiles = radius * 2;
-        CollectionReference reference = database.collection(FirestoreHelper.USER_COLLECTION);
+        CollectionReference reference = database.collection(FirestoreHelper.SELLER_COLLECTION);
         double centerLat = center.getLatitude();
         double centerLong = center.getLongitude();
         double offsetLat = (squareSideLengthMiles / 2) * ONE_MILE_LAT;

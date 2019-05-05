@@ -127,10 +127,30 @@ public class FirestoreHelper {
                 });
     }
 
-    public void writeSellerProfile(Bitmap image, String slogan, String description, final FirestoreHelperListener listener){
+    public void writeSellerProfile(Bitmap image, String slogan, String description, FableUser currentUser, final FirestoreHelperListener listener){
         Map<String, Object> sellerData = new HashMap<>();
         sellerData.put(SLOGAN_KEY, slogan);
         sellerData.put(DESC_KEY, description);
+
+        Map<String, Object> coordinateData = new HashMap<>();
+        coordinateData.put(GPS_LATITUDE_KEY, currentUser.getLatitude());
+        coordinateData.put(GPS_LONGITUDE_KEY, currentUser.getLongitude());
+        sellerData.put(GPS_COORDINATE_KEY ,coordinateData);
+
+        Map<String, Object> nestedName = new HashMap<>();
+        nestedName.put(FIRST_KEY, currentUser.getFirstName());
+        nestedName.put(LAST_KEY, currentUser.getLastName());
+        sellerData.put(NAME_KEY, nestedName);
+
+        Map<String, Object> nestedAddress = new HashMap<>();
+        nestedAddress.put(STREET_ADDRESS_KEY, currentUser.getStreetAddress());
+        nestedAddress.put(CITY_KEY, currentUser.getCity());
+        nestedAddress.put(STATE_KEY, currentUser.getState());
+        nestedAddress.put(ZIP_CODE_KEY, currentUser.getZipCode());
+        sellerData.put(ADDRESS_KEY, nestedAddress);
+
+        sellerData.put(PHONE_NUMBER_KEY, currentUser.getPhoneNumber());
+        sellerData.put(EMAIL_KEY, currentUser.getEmail());
 
         database.collection(SELLER_COLLECTION).document(user.getUid())
                 .set(sellerData, SetOptions.merge())

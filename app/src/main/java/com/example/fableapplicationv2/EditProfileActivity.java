@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 
@@ -51,28 +59,46 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void onDoneEditingButtonPress(View v){
-        boolean validSlogan = DataVerification.checkSellerSlogan(sloganEditText.getText().toString());
-        if(validSlogan){
-            sloganErrorTextView.setVisibility(View.GONE);
-            uploadingProgressBar.setVisibility(View.VISIBLE);
-            helper.writeSellerProfile(imageBitmap, sloganEditText.getText().toString(),
-                                      descriptionEditText.getText().toString(), new FirestoreHelperListener() {
-                        @Override
-                        public void onSuccessfulRequestComplete() {
-                            uploadingProgressBar.setVisibility(View.GONE);
-                            Toast.makeText(EditProfileActivity.this, "Updated profile successfully",
-                                    Toast.LENGTH_SHORT).show();
+        final boolean validSlogan = DataVerification.checkSellerSlogan(sloganEditText.getText().toString());
+        DocumentReference ref = FirebaseFirestore.getInstance()
+                .collection(FirestoreHelper.USER_COLLECTION)
+                .document(FirebaseAuth.getInstance().getUid());
+        ref.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            FableUser user = new FableUser(document);
+
+                            if(validSlogan){
+                                sloganErrorTextView.setVisibility(View.GONE);
+                                uploadingProgressBar.setVisibility(View.VISIBLE);
+                                helper.writeSellerProfile(imageBitmap, sloganEditText.getText().toString(),
+                                        descriptionEditText.getText().toString(), user,
+                                        new FirestoreHelperListener() {
+                                            @Override
+                                            public void onSuccessfulRequestComplete() {
+                                                uploadingProgressBar.setVisibility(View.GONE);
+                                                Toast.makeText(EditProfileActivity.this, "Updated profile successfully",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                            @Override
+                                            public void onFailedRequest() {
+                                                uploadingProgressBar.setVisibility(View.GONE);
+                                                Toast.makeText(EditProfileActivity.this, "Failed to update profile",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }else{
+                                sloganErrorTextView.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            Log.d(TAG, "Getting the user failed", task.getException());
                         }
-                        @Override
-                        public void onFailedRequest() {
-                            uploadingProgressBar.setVisibility(View.GONE);
-                            Toast.makeText(EditProfileActivity.this, "Failed to update profile",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }else{
-            sloganErrorTextView.setVisibility(View.VISIBLE);
-        }
+                    }
+                });
+
     }
 
     public void onDoneAddingListingPress(View v){

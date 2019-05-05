@@ -14,6 +14,7 @@ public class FableUser {
     private String zipCode;
     private double latitude;
     private double longitude;
+    private DocumentSnapshot snapshot;
 
     public FableUser(){
         Uid = "";
@@ -27,6 +28,7 @@ public class FableUser {
         zipCode = "";
         latitude = 0;
         longitude = 0;
+        snapshot = null;
     }
 
     public FableUser(String Uid, String firstName, String lastName, String email, String phoneNumber, String streetAddress,
@@ -45,6 +47,7 @@ public class FableUser {
 
         this.latitude = latitude;
         this.longitude = longitude;
+        snapshot = null;
     }
 
     public FableUser(DocumentSnapshot snapshot){
@@ -62,13 +65,14 @@ public class FableUser {
 
         this.latitude = snapshot.getDouble(FirestoreHelper.GPS_COORDINATE_KEY + "." + FirestoreHelper.GPS_LATITUDE_KEY);
         this.longitude = snapshot.getDouble(FirestoreHelper.GPS_COORDINATE_KEY + "." + FirestoreHelper.GPS_LONGITUDE_KEY);
+        this.snapshot = snapshot;
     }
 
     @Override
     public String toString(){
-        String str = "Farmer Object" + "\n";
+        String str = "FableUser Object" + "\n";
         str+= "Uid: " + Uid + "\n";
-        str+= "User: " + email + "\n";
+        str+= "Email: " + email + "\n";
         str+= "Phone Number: " + phoneNumber + "\n";
         str+= "First Name: " + firstName + "\n";
         str+= "Last Name: " + lastName + "\n";
@@ -121,5 +125,9 @@ public class FableUser {
 
     public double getLongitude(){
         return longitude;
+    }
+
+    public DocumentSnapshot getDoc(){
+        return snapshot;
     }
 }
