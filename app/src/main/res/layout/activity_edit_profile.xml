@@ -33,9 +33,9 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:src="@drawable/test_profile_picture"
             android:onClick="onImageSearch"
-            android:visibility="gone"/>
+            android:src="@drawable/test_profile_picture"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/idSloganError"
@@ -44,8 +44,8 @@
             android:layout_marginLeft="@dimen/margin5"
             android:layout_marginBottom="@dimen/margin5"
             android:fontFamily="@font/semibold"
-            android:textColor="@color/colorError"
             android:text="@string/sloganError"
+            android:textColor="@color/colorError"
             android:visibility="gone" />
 
         <EditText
@@ -78,7 +78,7 @@
             android:minLines="5"
             android:padding="@dimen/margin15"
             android:scrollbars="vertical"
-            android:visibility="gone"/>
+            android:visibility="gone" />
         <!-- Bottom 4 lines control # lines, and cursor gravity -->
 
         <TextView
@@ -92,17 +92,17 @@
             android:text="@string/farmerProduceLabel"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text25"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/idUploadingProgressBar"
-            android:indeterminateOnly="true"
             style="?android:attr/progressBarStyleHorizontal"
-            android:minHeight="50dp"
-            android:maxHeight="55dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:indeterminateOnly="true"
+            android:maxHeight="55dp"
+            android:minHeight="50dp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/idDoneEditingButton"
@@ -115,6 +115,85 @@
             android:fontFamily="@font/semibold"
             android:onClick="onDoneEditingButtonPress"
             android:text="@string/done"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text15" />
+
+        <EditText
+            android:id="@+id/idProduceNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin5"
+            android:background="@drawable/custom_edit_text"
+            android:ems="10"
+            android:fontFamily="@font/light"
+            android:hint="@string/produceName"
+            android:padding="@dimen/margin15"
+            android:visibility="visible" />
+
+        <EditText
+            android:id="@+id/idProduceDescriptionEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin5"
+            android:background="@drawable/custom_edit_text"
+            android:ems="10"
+            android:fontFamily="@font/light"
+            android:hint="@string/produceDescription"
+            android:padding="@dimen/margin15"
+            android:visibility="visible" />
+
+        <EditText
+            android:id="@+id/idPriceEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin5"
+            android:background="@drawable/custom_edit_text"
+            android:ems="10"
+            android:fontFamily="@font/light"
+            android:padding="@dimen/margin15"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/idProducePriceLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin20"
+            android:layout_marginBottom="@dimen/margin5"
+            android:fontFamily="@font/semibold"
+            android:gravity="center"
+            android:text="@string/priceLabel"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text25"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/idDoneAddingListing"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin50"
+            android:fontFamily="@font/semibold"
+            android:onClick="onDoneAddingListingPress"
+            android:text="@string/doneAddingListing"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text15" />
+
+        <Button
+            android:id="@+id/idCancelButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin50"
+            android:fontFamily="@font/semibold"
+            android:onClick="onCancelButtonPress"
+            android:text="@string/cancel"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text15" />
 

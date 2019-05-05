@@ -22,6 +22,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private boolean editProfileState;
 
+    //Edit profile elements
     private Uri mImageUri;
     private Bitmap imageBitmap;
     private FirestoreHelper helper;
@@ -34,6 +35,14 @@ public class EditProfileActivity extends AppCompatActivity {
     private TextView produceListingTitleTextView;
     private TextView titleTextView;
 
+    //Add listing elements
+    private EditText produceNameEditText;
+    private EditText produceDescriptionEditText;
+    private EditText producePriceEditText;
+    private TextView producePriceLabelTextView;
+    private Button addListingButton;
+    private Button cancelButton;
+
     public void onImageSearch(View v){
         Intent intent  = new Intent();
         intent.setType("image/*");
@@ -42,31 +51,36 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void onDoneEditingButtonPress(View v){
-        Log.d(TAG,"Running with a " + !editProfileState + " value passed");
-        changeActivityState(!editProfileState);
+        boolean validSlogan = DataVerification.checkSellerSlogan(sloganEditText.getText().toString());
+        if(validSlogan){
+            sloganErrorTextView.setVisibility(View.GONE);
+            uploadingProgressBar.setVisibility(View.VISIBLE);
+            helper.writeSellerProfile(imageBitmap, sloganEditText.getText().toString(),
+                                      descriptionEditText.getText().toString(), new FirestoreHelperListener() {
+                        @Override
+                        public void onSuccessfulRequestComplete() {
+                            uploadingProgressBar.setVisibility(View.GONE);
+                            Toast.makeText(EditProfileActivity.this, "Updated profile successfully",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        @Override
+                        public void onFailedRequest() {
+                            uploadingProgressBar.setVisibility(View.GONE);
+                            Toast.makeText(EditProfileActivity.this, "Failed to update profile",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }else{
+            sloganErrorTextView.setVisibility(View.VISIBLE);
+        }
+    }
 
-//        boolean validSlogan = DataVerification.checkSellerSlogan(sloganEditText.getText().toString());
-//        if(validSlogan){
-//            sloganErrorTextView.setVisibility(View.GONE);
-//            uploadingProgressBar.setVisibility(View.VISIBLE);
-//            helper.writeSellerProfile(imageBitmap, sloganEditText.getText().toString(),
-//                                      descriptionEditText.getText().toString(), new FirestoreHelperListener() {
-//                        @Override
-//                        public void onSuccessfulRequestComplete() {
-//                            uploadingProgressBar.setVisibility(View.GONE);
-//                            Toast.makeText(EditProfileActivity.this, "Updated profile successfully",
-//                                    Toast.LENGTH_SHORT).show();
-//                        }
-//                        @Override
-//                        public void onFailedRequest() {
-//                            uploadingProgressBar.setVisibility(View.GONE);
-//                            Toast.makeText(EditProfileActivity.this, "Failed to update profile",
-//                                    Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//        }else{
-//            sloganErrorTextView.setVisibility(View.VISIBLE);
-//        }
+    public void onDoneAddingListingPress(View v){
+
+    }
+
+    public void onCancelButtonPress(View v){
+
     }
 
     private void changeActivityState(boolean state){
@@ -90,6 +104,7 @@ public class EditProfileActivity extends AppCompatActivity {
         descriptionEditText.setVisibility(code);
         uploadingProgressBar.setVisibility(View.GONE);
         produceListingTitleTextView.setVisibility(code);
+        doneEditingButton.setVisibility(code);
 
         if(code == View.VISIBLE)
             titleTextView.setText(getString(R.string.editProfileTitle));
@@ -99,6 +114,13 @@ public class EditProfileActivity extends AppCompatActivity {
      * @param code : View code, i.e. View.GONE, View.VISIBLE
      */
     private void setListingCreatorVisibility(int code){
+        produceNameEditText.setVisibility(code);
+        produceDescriptionEditText.setVisibility(code);
+        producePriceEditText.setVisibility(code);
+        producePriceLabelTextView.setVisibility(code);
+        addListingButton.setVisibility(code);
+        cancelButton.setVisibility(code);
+
         if(code == View.VISIBLE)
             titleTextView.setText(getString(R.string.createProduceListingTitle));
     }
@@ -108,6 +130,7 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        //Edit profile elements
         profilePictureImageView = findViewById(R.id.idFarmerProfileImage);
         sloganEditText = findViewById(R.id.idSloganEditText);
         sloganErrorTextView = findViewById(R.id.idSloganError);
@@ -117,11 +140,19 @@ public class EditProfileActivity extends AppCompatActivity {
         produceListingTitleTextView = findViewById(R.id.idProduceListingTitle);
         titleTextView = findViewById(R.id.idProfileTitle);
 
+        //Add produce listing elements
+        produceNameEditText = findViewById(R.id.idProduceNameEditText);
+        produceDescriptionEditText = findViewById(R.id.idProduceDescriptionEditText);
+        producePriceEditText = findViewById(R.id.idPriceEditText);
+        producePriceLabelTextView = findViewById(R.id.idProducePriceLabel);
+        addListingButton = findViewById(R.id.idDoneAddingListing);
+        cancelButton = findViewById(R.id.idCancelButton);
+
         helper = new FirestoreHelper();
 
-        // Get rid of this line, set to intent asking
-        setEditProfileVisibility(View.VISIBLE);
-        editProfileState = true;
+        Bundle extras = getIntent().getExtras();
+        editProfileState = extras.getBoolean("isEditProfileIntent", true);
+        changeActivityState(editProfileState);
     }
 
     @Override

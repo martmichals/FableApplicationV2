@@ -11,8 +11,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -46,6 +48,7 @@ public class FirestoreHelper {
     public static final String GPS_LONGITUDE_KEY = "long";
     public static final String SLOGAN_KEY = "slogan";
     public static final String DESC_KEY = "description";
+    public static final String PRODUCE_KEY = "produce";
 
     //Firebase objects
     private FirebaseFirestore database;
@@ -167,8 +170,10 @@ public class FirestoreHelper {
         });
     }
 
-    // TODO : Add method to search for farm based on farm name
-    // TODO : Add method to add additional farmer data
+    public void searchForSellersSelling(String produce, final FirestoreHelperListener listener){
+        CollectionReference ref = database.collection("seller_profiles");
+        Query sellerProfileQuery = ref.whereArrayContains("produce", produce);
+    }
 
     /** Method to get the GPS coordinates from a given address in string form
      * @param context : context from which the method is called

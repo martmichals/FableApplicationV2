@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static ArrayList<FableUser> searchResults;
     private static ArrayList<DocumentSnapshot> intermediary;
-    private static boolean isUserAFarmer;
     public static String TAG = "MainActivity";
 
     private Context mContext;
@@ -89,15 +88,23 @@ public class MainActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         updateSystemState();
 
-        // TODO : Create a method to check if the user is a farmer or a consumer
-
         //Used to debug the first searching function
         //searchForFarmersInRadius(0.50);
         //launchEditFarmerActivity();
     }
 
+
+    /** IMPORTANT TO NOTE:
+     *  Whenever launching the edit profile activity, you have to pack the intent with:
+     *  "isEditProfileIntent" , true/false
+     *
+     *  This specifies the 'mode' to start the activity:
+     *  true - edit the seller profile mode
+     *  false - add a produce listing mode
+     */
     private void launchEditFarmerActivity() {
         Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
+        intent.putExtra("isEditProfileIntent", false);
         startActivity(intent);
     }
 
@@ -222,7 +229,4 @@ public class MainActivity extends AppCompatActivity {
         // DELETE LATER
         logOffOnClick(v);
     }
-
-    //TODO : Create a method to order Farmer search results based on their distance from the user
-    //TODO : Create a method to order Farmer search results based their review ratings
 }

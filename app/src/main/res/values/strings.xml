@@ -25,10 +25,17 @@
     <string name="bio">Bio</string>
     <string name="finish">Finished</string>
 
+
     <string name="farmerSloganEditTextLabel">5 word or less slogan</string>
     <string name="farmerBioEditTextLabel">A brief paragraph describing your business</string>
     <string name="farmerProduceLabel">Produce Listings</string>
     <string name="createProduceListingTitle">Add Produce Listing</string>
     <string name="editProfileTitle">Edit Profile</string>
-    <string name="done">Done</string>
+    <string name="done">Done Editing</string>
+    <string name="doneAddingListing">Add produce listing</string>
+    <string name="produceDescription">Short produce description</string>
+    <string name="produceName">Produce name</string>
+    <string name="priceLabel">$/lb</string>
+    <string name="cancel">Cancel</string>
+
 </resources>
