@@ -48,7 +48,12 @@ public class FirestoreHelper {
     public static final String GPS_LONGITUDE_KEY = "long";
     public static final String SLOGAN_KEY = "slogan";
     public static final String DESC_KEY = "description";
-    public static final String PRODUCE_KEY = "produce";
+
+    //Listing sub-collection keys for every seller profile
+    public static final String LISTING_COLLECTION = "listings";
+    public static final String PRODUCE_NAME = "name";
+    public static final String PRODUCE_DESCRIPTION = "description";
+    public static final String PRICE = "price";
 
     //Firebase objects
     private FirebaseFirestore database;
@@ -127,7 +132,7 @@ public class FirestoreHelper {
                 });
     }
 
-    public void writeSellerProfile(Bitmap image, String slogan, String description, FableUser currentUser, final FirestoreHelperListener listener){
+    public void writeSellerProfile(final Bitmap image, String slogan, String description, FableUser currentUser, final FirestoreHelperListener listener){
         Map<String, Object> sellerData = new HashMap<>();
         sellerData.put(SLOGAN_KEY, slogan);
         sellerData.put(DESC_KEY, description);
@@ -158,36 +163,68 @@ public class FirestoreHelper {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Seller successfully written to the database");
+                        if(image == null)
+                            listener.onSuccessfulRequestComplete();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error writing seller to the database", e);
+                        if(image == null)
+                            listener.onFailedRequest();
                     }
                 });
 
         String Uid = user.getUid();
         StorageReference uploadReference = imageFolderReference.child(Uid + ".jpg");
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
+        if(image != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+            byte[] data = stream.toByteArray();
 
-        UploadTask uploadTask = uploadReference.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.d(TAG, "The image upload was not successful");
-                listener.onFailedRequest();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d(TAG, "The image upload was successful");
-                listener.onSuccessfulRequestComplete();
-            }
-        });
+            UploadTask uploadTask = uploadReference.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.d(TAG, "The image upload was not successful");
+                    listener.onFailedRequest();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Log.d(TAG, "The image upload was successful");
+                    listener.onSuccessfulRequestComplete();
+                }
+            });
+        }
+    }
+
+    public void addListing(String produceName, String produceDescription, double price,
+                           final FirestoreHelperListener listener){
+        Map<String, Object> listingData = new HashMap<>();
+        listingData.put(DESC_KEY, produceDescription);
+        listingData.put(PRICE, price);
+
+        database.collection(SELLER_COLLECTION).document(user.getUid()).collection(LISTING_COLLECTION)
+                .document(produceName.toLowerCase())
+                .set(listingData, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Seller successfully written to the database");
+                        listener.onSuccessfulRequestComplete();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing seller to the database", e);
+                        listener.onFailedRequest();
+                    }
+                });
+
     }
 
     public void searchForSellersSelling(String produce, final FirestoreHelperListener listener){

@@ -2,6 +2,7 @@ package com.example.fableapplicationv2;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -17,14 +18,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 
+import io.grpc.Context;
+
+
+// TODO : Add code to insure that the user selects a profile image before uploading
 public class EditProfileActivity extends AppCompatActivity {
     private static final String TAG = "EditProfileActivity";
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -50,6 +60,37 @@ public class EditProfileActivity extends AppCompatActivity {
     private TextView producePriceLabelTextView;
     private Button addListingButton;
     private Button cancelButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_profile);
+
+        //Edit profile elements
+        profilePictureImageView = findViewById(R.id.idFarmerProfileImage);
+        sloganEditText = findViewById(R.id.idSloganEditText);
+        sloganErrorTextView = findViewById(R.id.idSloganError);
+        descriptionEditText = findViewById(R.id.idShortDescriptionEditText);
+        uploadingProgressBar = findViewById(R.id.idUploadingProgressBar);
+        doneEditingButton = findViewById(R.id.idDoneEditingButton);
+        produceListingTitleTextView = findViewById(R.id.idProduceListingTitle);
+        titleTextView = findViewById(R.id.idProfileTitle);
+
+        //Add produce listing elements
+        produceNameEditText = findViewById(R.id.idProduceNameEditText);
+        produceDescriptionEditText = findViewById(R.id.idProduceDescriptionEditText);
+        producePriceEditText = findViewById(R.id.idPriceEditText);
+        producePriceLabelTextView = findViewById(R.id.idProducePriceLabel);
+        addListingButton = findViewById(R.id.idAddListing);
+        cancelButton = findViewById(R.id.idCancelButton);
+
+        helper = new FirestoreHelper();
+        fillUserProfileFromDatabase();
+
+        Bundle extras = getIntent().getExtras();
+        editProfileState = extras.getBoolean("isEditProfileIntent", true);
+        changeActivityState(editProfileState);
+    }
 
     public void onImageSearch(View v){
         Intent intent  = new Intent();
@@ -102,11 +143,74 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void onDoneAddingListingPress(View v){
+        if(!editProfileState) {
+            String produceName = produceNameEditText.getText().toString();
+            String produceDescription = produceDescriptionEditText.getText().toString();
+            double price = Double.parseDouble(producePriceEditText.getText().toString());
 
+            helper.addListing(produceName, produceDescription, price, new FirestoreHelperListener() {
+                @Override
+                public void onSuccessfulRequestComplete() {
+                    Toast.makeText(EditProfileActivity.this, "Listing was added successfully",
+                            Toast.LENGTH_SHORT).show();
+                    clearEditTextsListing();
+                }
+
+                @Override
+                public void onFailedRequest() {
+                    Toast.makeText(EditProfileActivity.this, "Failed to add listing",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            changeActivityState(false);
+        }
+    }
+
+    public void clearEditTextsListing(){
+        produceNameEditText.setText("");
+        produceDescriptionEditText.setText("");
+        producePriceEditText.setText("");
     }
 
     public void onCancelButtonPress(View v){
+        changeActivityState(true);
+    }
 
+    private void fillUserProfileFromDatabase(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        DocumentReference ref = FirebaseFirestore.getInstance()
+                .collection(FirestoreHelper.SELLER_COLLECTION)
+                .document(FirebaseAuth.getInstance().getUid());
+
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    sloganEditText.setText(doc.getString("slogan"));
+                    descriptionEditText.setText(doc.getString("description"));
+                }
+            }
+        });
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference islandRef = storage.getReference().child("images/" + user.getUid() + ".jpg");
+        final long ONE_MEGABYTE = 1024 * 1024;
+        islandRef.getBytes(ONE_MEGABYTE * 2).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                profilePictureImageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, profilePictureImageView.getWidth(),
+                        profilePictureImageView.getHeight(), false));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "Failed image download");
+            }
+        });
     }
 
     private void changeActivityState(boolean state){
@@ -144,41 +248,10 @@ public class EditProfileActivity extends AppCompatActivity {
         produceDescriptionEditText.setVisibility(code);
         producePriceEditText.setVisibility(code);
         producePriceLabelTextView.setVisibility(code);
-        addListingButton.setVisibility(code);
         cancelButton.setVisibility(code);
 
         if(code == View.VISIBLE)
             titleTextView.setText(getString(R.string.createProduceListingTitle));
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
-
-        //Edit profile elements
-        profilePictureImageView = findViewById(R.id.idFarmerProfileImage);
-        sloganEditText = findViewById(R.id.idSloganEditText);
-        sloganErrorTextView = findViewById(R.id.idSloganError);
-        descriptionEditText = findViewById(R.id.idShortDescriptionEditText);
-        uploadingProgressBar = findViewById(R.id.idUploadingProgressBar);
-        doneEditingButton = findViewById(R.id.idDoneEditingButton);
-        produceListingTitleTextView = findViewById(R.id.idProduceListingTitle);
-        titleTextView = findViewById(R.id.idProfileTitle);
-
-        //Add produce listing elements
-        produceNameEditText = findViewById(R.id.idProduceNameEditText);
-        produceDescriptionEditText = findViewById(R.id.idProduceDescriptionEditText);
-        producePriceEditText = findViewById(R.id.idPriceEditText);
-        producePriceLabelTextView = findViewById(R.id.idProducePriceLabel);
-        addListingButton = findViewById(R.id.idDoneAddingListing);
-        cancelButton = findViewById(R.id.idCancelButton);
-
-        helper = new FirestoreHelper();
-
-        Bundle extras = getIntent().getExtras();
-        editProfileState = extras.getBoolean("isEditProfileIntent", true);
-        changeActivityState(editProfileState);
     }
 
     @Override
