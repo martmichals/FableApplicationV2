@@ -204,7 +204,7 @@ public class FirestoreHelper {
     public void addListing(String produceName, String produceDescription, double price,
                            final FirestoreHelperListener listener){
         Map<String, Object> listingData = new HashMap<>();
-        listingData.put(DESC_KEY, produceDescription);
+        listingData.put(PRODUCE_DESCRIPTION, produceDescription);
         listingData.put(PRICE, price);
 
         database.collection(SELLER_COLLECTION).document(user.getUid()).collection(LISTING_COLLECTION)
@@ -309,4 +309,8 @@ public class FirestoreHelper {
     }
 
     public void setRequestListener(FirestoreHelperListener listener){this.listener = listener;}
+
+    public FirebaseFirestore getDatabase(){
+        return database;
+    }
 }

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private static FirebaseUser firebaseUser;
     private FirestoreHelper firestoreHelper;
 
-    private static ArrayList<FableUser> searchResults;
+    private static ArrayList<Seller> searchResults;
     private static FableUser currentUser;
     private static ArrayList<DocumentSnapshot> intermediary;
     public static String TAG = "MainActivity";
@@ -180,13 +180,23 @@ public class MainActivity extends AppCompatActivity {
         if (intermediary != null) {
             searchResults = new ArrayList<>();
             for (DocumentSnapshot snap : intermediary) {
-                FableUser user = new FableUser(snap);
-                if(!(user.getUid().equals(firebaseUser.getUid()))) {
-                    searchResults.add(user);
-                    Log.d(TAG, user.toString());
-                }else{
-                    Log.d(TAG, "User found is the same as the current user");
-                }
+                final Seller seller = new Seller(snap);
+                seller.fillListings(new GeneralListener() {
+                    @Override
+                    public void onSuccess() {
+                        if(!(firebaseUser.getUid().equals(seller.getUid()))) {
+                            searchResults.add(seller);
+                            Log.d(TAG, "ADD TO RADIAL RESULTS: " + seller.toString());
+                        }else{
+                            Log.d(TAG, "User found is the same as the current user");
+                        }
+                    }
+
+                    @Override
+                    public void onFail() {
+                        Log.d(TAG, "Failed to get the listings for the seller profile");
+                    }
+                });
             }
             intermediary = null;
         } else {
@@ -244,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
         // DELETE LATER
 
-//        logOffOnClick(v);
+        //logOffOnClick(v);
         int rad = mRadiusSeekBar.getProgress();
         submitQuery("", rad);
     }
