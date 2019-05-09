@@ -122,9 +122,9 @@ public class MainActivity extends AppCompatActivity {
      *  true - edit the seller profile mode
      *  false - add a produce listing mode
      */
-    private void launchEditFarmerActivity() {
+    private void launchEditFarmerActivity(boolean modeBoolean) {
         Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
-        intent.putExtra("isEditProfileIntent", true);
+        intent.putExtra("isEditProfileIntent", modeBoolean);
         startActivity(intent);
     }
 
@@ -223,29 +223,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void searchButtonOnClick(View v) {
-        // Allow the search LinearLayout to be the only visible view
-        if (mSearchLinearLayout.getVisibility() != v.VISIBLE) {
-            mSearchLinearLayout.setVisibility(v.VISIBLE);
-            mFollowedLinearLayout.setVisibility(v.GONE);
-            mFeaturedLinearLayout.setVisibility(v.GONE);
-        }
-    }
 
-    public void followedButtonOnClick(View v) {
+    public void editProfileOnClick(View v) {
         // Allow the followed LinearLayout to be the only visible view
-        if (mFollowedLinearLayout.getVisibility() != v.VISIBLE) {
-            {
-                mFollowedLinearLayout.setVisibility(v.VISIBLE);
-                mSearchLinearLayout.setVisibility(v.GONE);
-                mFeaturedLinearLayout.setVisibility(v.GONE);
-            }
-        }
+//        if (mFollowedLinearLayout.getVisibility() != v.VISIBLE) {
+//            {
+//                mFollowedLinearLayout.setVisibility(v.VISIBLE);
+//                mSearchLinearLayout.setVisibility(v.GONE);
+//                mFeaturedLinearLayout.setVisibility(v.GONE);
+//            }
+//        }
 
-        launchEditFarmerActivity();
+        launchEditFarmerActivity(true);
     }
 
-    public void featuredButtonOnClick(View v) {
+    public void createListingOnClick(View v) {
         // Allow the featured LinearLayout to be the only visible view
 //        if (mFeaturedLinearLayout.getVisibility() != v.VISIBLE) {
 //            mFeaturedLinearLayout.setVisibility(v.VISIBLE);
@@ -254,8 +246,11 @@ public class MainActivity extends AppCompatActivity {
 //        }
         // DELETE LATER
 
+        // Connect this to the onclick event for adding new listing
+
         //logOffOnClick(v);
         int rad = mRadiusSeekBar.getProgress();
         submitQuery(mSearchView.getQuery().toString(), rad);
+        //launchEditFarmerActivity(false);
     }
 }

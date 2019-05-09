@@ -85,11 +85,13 @@ public class EditProfileActivity extends AppCompatActivity {
         cancelButton = findViewById(R.id.idCancelButton);
 
         helper = new FirestoreHelper();
-        fillUserProfileFromDatabase();
 
         Bundle extras = getIntent().getExtras();
         editProfileState = extras.getBoolean("isEditProfileIntent", true);
         changeActivityState(editProfileState);
+        if(editProfileState){
+            fillUserProfileFromDatabase();
+        }
     }
 
     public void onImageSearch(View v){
