@@ -62,4 +62,20 @@ public class Seller extends FableUser {
                     }
                 });
     }
+
+    public Listing listingsContains(String searchQuery){
+        searchQuery = searchQuery.toLowerCase();
+
+        for(Listing listing: listings){
+            String listingName = listing.getProduceName().toLowerCase();
+
+            for(int i = 1; i <= listingName.length(); i++){
+                String str = listingName.substring(0, i);
+                Log.d(TAG, "The substring used to check: " + str);
+                if(str.equals(searchQuery))
+                    return listing;
+            }
+        }
+        return null;
+    }
 }

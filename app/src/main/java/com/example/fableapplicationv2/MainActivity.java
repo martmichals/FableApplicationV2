@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private FirestoreHelper firestoreHelper;
 
     private static ArrayList<Seller> searchResults;
+    private static ArrayList<Listing> parallelListing;
+
     private static FableUser currentUser;
     private static ArrayList<DocumentSnapshot> intermediary;
     public static String TAG = "MainActivity";
@@ -167,8 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSearchComplete() {
                     intermediary = queryAssist.circularizeSquareResults(radius, center);
-                    convertIntermediariesToUsers();
-                    filterIntermediaries(produceQuery);
+                    convertIntermediariesToUsers(produceQuery);
                     listener.onSuccess();
                 }
             });
@@ -176,17 +177,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Converting the DocumentSnapshots dumped into the intermediary to Users
-    private static void convertIntermediariesToUsers() {
+    private static void convertIntermediariesToUsers(final String aQuery) {
         if (intermediary != null) {
             searchResults = new ArrayList<>();
+            parallelListing = new ArrayList<>();
             for (DocumentSnapshot snap : intermediary) {
                 final Seller seller = new Seller(snap);
                 seller.fillListings(new GeneralListener() {
                     @Override
                     public void onSuccess() {
                         if(!(firebaseUser.getUid().equals(seller.getUid()))) {
-                            searchResults.add(seller);
-                            Log.d(TAG, "ADD TO RADIAL RESULTS: " + seller.toString());
+                            if(seller.listingsContains(aQuery) != null) {
+                                searchResults.add(seller);
+                                parallelListing.add(seller.listingsContains(aQuery));
+                                Log.d(TAG, "ADD TO RADIAL RESULTS: " + seller.toString());
+                            }
                         }else{
                             Log.d(TAG, "User found is the same as the current user");
                         }
@@ -204,15 +209,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private static void filterIntermediaries(String query){
-
-    }
-
     public static void submitQuery(final String aQuery, double aSeekBarRadius) {
         searchForUsersInRadius(aQuery, aSeekBarRadius, new GeneralListener() {
             @Override
             public void onSuccess() {
-                //On search success
                 //xmlHandler.createCards(aQuery, searchResults);
             }
 
@@ -256,6 +256,6 @@ public class MainActivity extends AppCompatActivity {
 
         //logOffOnClick(v);
         int rad = mRadiusSeekBar.getProgress();
-        submitQuery("", rad);
+        submitQuery(mSearchView.getQuery().toString(), rad);
     }
 }
