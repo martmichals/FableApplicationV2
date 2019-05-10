@@ -78,4 +78,10 @@ public class Seller extends FableUser {
         }
         return null;
     }
+
+    public double getDistanceToUser(FableUser fableUser){
+        return GPSQueryAssist.getMilesBtwGPSCoordinates(this.getLatitude(), this.getLongitude(),
+                                         fableUser.getLatitude(), fableUser.getLongitude());
+
+    }
 }
