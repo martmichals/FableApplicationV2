@@ -40,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private static FirebaseUser firebaseUser;
     private FirestoreHelper firestoreHelper;
 
-    private static ArrayList<Seller> searchResults;
-    private static ArrayList<Listing> parallelListing;
+    public static ArrayList<Seller> searchResults;
+    public static ArrayList<Listing> parallelListing;
 
-    private static FableUser currentUser;
-    private static ArrayList<DocumentSnapshot> intermediary;
+    public static FableUser currentUser;
+    public static ArrayList<DocumentSnapshot> intermediary;
     public static String TAG = "MainActivity";
 
     private Context mContext;
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         //launchEditFarmerActivity();
     }
 
-    private void fillCurrentUser(){
+    private void fillCurrentUser() {
         DocumentReference ref = FirebaseFirestore.getInstance()
                 .collection(FirestoreHelper.USER_COLLECTION)
                 .document(firebaseUser.getUid());
@@ -114,13 +114,14 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    /** IMPORTANT TO NOTE:
-     *  Whenever launching the edit profile activity, you have to pack the intent with:
-     *  "isEditProfileIntent" , true/false
-     *
-     *  This specifies the 'mode' to start the activity:
-     *  true - edit the seller profile mode
-     *  false - add a produce listing mode
+    /**
+     * IMPORTANT TO NOTE:
+     * Whenever launching the edit profile activity, you have to pack the intent with:
+     * "isEditProfileIntent" , true/false
+     * <p>
+     * This specifies the 'mode' to start the activity:
+     * true - edit the seller profile mode
+     * false - add a produce listing mode
      */
     private void launchEditFarmerActivity(boolean modeBoolean) {
         Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Method to search for farmers in a given radius
-    private static void searchForUsersInRadius(final String produceQuery, final double radius, final GeneralListener listener) {
+    public static void searchForUsersInRadius(final String produceQuery, final double radius, final GeneralListener listener) {
         Log.d(TAG, "Running search function");
         DocumentSnapshot document = currentUser.getDoc();
         intermediary = null;
@@ -169,31 +170,35 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSearchComplete() {
                     intermediary = queryAssist.circularizeSquareResults(radius, center);
-                    convertIntermediariesToUsers(produceQuery);
-                    listener.onSuccess();
+                    convertIntermediariesToUsers(produceQuery, listener);
                 }
             });
         }
     }
 
     //Converting the DocumentSnapshots dumped into the intermediary to Users
-    private static void convertIntermediariesToUsers(final String aQuery) {
+    public static void convertIntermediariesToUsers(final String aQuery, final GeneralListener generalListener) {
         if (intermediary != null) {
             searchResults = new ArrayList<>();
             parallelListing = new ArrayList<>();
-            for (DocumentSnapshot snap : intermediary) {
-                final Seller seller = new Seller(snap);
+            for (int i = 0; i < intermediary.size(); i++) {
+                final Seller seller = new Seller(intermediary.get(i));
+                final int j = i;
+                final int frozenSize = intermediary.size()-1;
                 seller.fillListings(new GeneralListener() {
                     @Override
                     public void onSuccess() {
-                        if(!(firebaseUser.getUid().equals(seller.getUid()))) {
-                            if(seller.listingsContains(aQuery) != null) {
+                        if (!(firebaseUser.getUid().equals(seller.getUid()))) {
+                            if (seller.listingsContains(aQuery) != null) {
                                 searchResults.add(seller);
                                 parallelListing.add(seller.listingsContains(aQuery));
                                 Log.d(TAG, "ADD TO RADIAL RESULTS: " + seller.toString());
                             }
-                        }else{
+                        } else {
                             Log.d(TAG, "User found is the same as the current user");
+                        }
+                        if (j == frozenSize){
+                            generalListener.onSuccess();
                         }
                     }
 
@@ -248,9 +253,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Connect this to the onclick event for adding new listing
 
-        //logOffOnClick(v);
-        int rad = mRadiusSeekBar.getProgress();
-        submitQuery(mSearchView.getQuery().toString(), rad);
+        logOffOnClick(v);
+        //int rad = mRadiusSeekBar.getProgress();
+        //submitQuery(mSearchView.getQuery().toString(), rad);
         //launchEditFarmerActivity(false);
     }
 }

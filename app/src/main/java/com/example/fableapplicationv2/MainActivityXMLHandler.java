@@ -2,11 +2,15 @@ package com.example.fableapplicationv2;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.sip.SipSession;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -18,9 +22,18 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.lang.reflect.Array;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.fableapplicationv2.MainActivity.searchResults;
 import static com.example.fableapplicationv2.MainActivity.submitQuery;
 
 public class MainActivityXMLHandler extends AppCompatActivity {
@@ -61,6 +74,10 @@ public class MainActivityXMLHandler extends AppCompatActivity {
         setListeners();
     }
 
+    public void setArrayLists(ArrayList<Seller> aSellerList, ArrayList<Listing> aListingList, FableUser aUser){
+
+    }
+
 
     public void setListeners() {
 
@@ -77,6 +94,7 @@ public class MainActivityXMLHandler extends AppCompatActivity {
                 //submitQuery(query, seekBarRadius);
                 //gatherQueryResults(query);
                 createCards(query);
+
                 mSearchView.setQuery(null, false);
 
 
@@ -113,34 +131,72 @@ public class MainActivityXMLHandler extends AppCompatActivity {
     public void createCards(String aQuery) {
         List<String> nameArray = new ArrayList<>();
 
-        //for (int i = 0; i < aSearchResults.size(); i++) {
-        for (int i = 0; i < 2; i++) {
-            // Initialize a new ImageView for farmer's profile picture
-            ImageView profilePicture = new ImageView(mContext);
-            profilePicture.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.test_profile_picture));
+        MainActivity.searchForUsersInRadius(aQuery, seekBarRadius, new GeneralListener() {
+            @Override
+            public void onSuccess() {
+                for (int i = 0; i < MainActivity.searchResults.size(); i++){
 
-            //createCard(aSearchResults.get(i).getFirstName(), "Example Farm Description, We sell many greens", 20.5, profilePicture);
-            createCard(aQuery, "Example Farm Description, We sell many greens", seekBarRadius, profilePicture);
-        }
+                    createCard(MainActivity.searchResults.get(i).getName(),
+                            MainActivity.searchResults.get(i).getDescription(),
+                            MainActivity.searchResults.get(i).getDistanceToUser(MainActivity.currentUser),
+                            MainActivity.searchResults.get(i).getUid());
 
-        for (int j = 0; j < currentCardsList.size(); j++) {
-            mSearchResultsLinearLayout.addView(currentCardsList.get(j));
-        }
+                }
+                for (int j = 0; j < currentCardsList.size(); j++) {
+                    Log.e("FUK","YES");
+                    mSearchResultsLinearLayout.addView(currentCardsList.get(j));
+                }
+            }
+
+            @Override
+            public void onFail() {
+                // The search failed
+            }
+        });
+
+//        //for (int i = 0; i < aSearchResults.size(); i++) {
+//        for (int i = 0; i < 2; i++) {
+//            // Initialize a new ImageView for farmer's profile picture
+//            ImageView profilePicture = new ImageView(mContext);
+//            profilePicture.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.test_profile_picture));
+//
+//            //createCard(aSearchResults.get(i).getFirstName(), "Example Farm Description, We sell many greens", 20.5, profilePicture);
+//            createCard(aQuery, "Example Farm Description, We sell many greens", seekBarRadius, profilePicture);
+//        }
+
+
     }
-
-//    public void gatherQueryResults(String aQuery) {
-//        createCards(aQuery);
-//    }
 
     // https://android--code.blogspot.com/2015/12/android-how-to-create-cardview.html
 
     @SuppressLint("ResourceType")
-    public void createCard(final String aFarmName, String aFarmDescription, final Double aDistanceAway, ImageView aProfilePicture) {
+    public void createCard(final String aFarmName, String aFarmDescription, final Double aDistanceAway, String aUid) {
         // Initialize a new CardView
         CardView card = new CardView(mContext);
 
         card.setClickable(true);
 
+        // Initialize a new ImageView for farmer's profile picture
+        final ImageView profilePicture = new ImageView(mContext);
+
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference islandRef = storage.getReference().child("images/" + aUid + ".jpg");
+        final long ONE_MEGABYTE = 1024 * 1024;
+        islandRef.getBytes(ONE_MEGABYTE * 5).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                profilePicture.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 100,
+                        100, false));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+            }
+        });
+
+        profilePicture.setId(1);
 
         // Initialize a new RelativeLayout
         RelativeLayout rl = new RelativeLayout(mContext);
@@ -175,12 +231,6 @@ public class MainActivityXMLHandler extends AppCompatActivity {
         card.setMaxCardElevation(15); // Set the CardView maximum elevation
         card.setCardElevation(9); // Set CardView elevation
 
-
-        // Initialize a new ImageView for farmer's profile picture
-        ImageView profilePicture = aProfilePicture;
-        profilePicture.setId(1);
-        //profilePicture.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.test_profile_picture));
-
         // Initialize new layout parameters for the ImageView
         RelativeLayout.LayoutParams profilePicParams = new RelativeLayout.LayoutParams(150, 150);
         profilePicParams.addRule(rl.CENTER_VERTICAL);
@@ -189,7 +239,6 @@ public class MainActivityXMLHandler extends AppCompatActivity {
 
         // Add ImageView to the relative layout
         rl.addView(profilePicture);
-
 
         LinearLayout nameAndDistanceLayout = new LinearLayout(mContext);
         nameAndDistanceLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -229,11 +278,17 @@ public class MainActivityXMLHandler extends AppCompatActivity {
         // Initialize a new TextView for the farm's description
         TextView distanceAwayTextView = new TextView(mContext);
         distanceAwayTextView.setId(4);
-        distanceAwayTextView.setText("(" + Double.toString(aDistanceAway) + " mi)");
+
+        DecimalFormat df = new DecimalFormat("#.#");
+        df.setRoundingMode(RoundingMode.FLOOR);
+        final double result = new Double(df.format(aDistanceAway));
+
+        distanceAwayTextView.setText("" + Double.toString(result) + " mi");
         distanceAwayTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
         distanceAwayTextView.setTextColor(Color.GRAY);
 
-        LinearLayout.LayoutParams distanceAwayTextViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams distanceAwayTextViewParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         // Initialize new layout parameters for the frm description TextView
         //RelativeLayout.LayoutParams distanceAwayTextViewParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
@@ -290,13 +345,7 @@ public class MainActivityXMLHandler extends AppCompatActivity {
             }
         });
 
-        // Set an onclick listener for the card, increment
-        // each card using a parameter with numbers generated by loop in previous method
-
-
         currentCardsList.add(card);
-        // Add the CardView in Search LinearLayout
-        //mSearchResultsLinearLayout.addView(card);
     }
 
 }

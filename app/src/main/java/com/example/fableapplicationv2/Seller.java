@@ -84,4 +84,12 @@ public class Seller extends FableUser {
                                          fableUser.getLatitude(), fableUser.getLongitude());
 
     }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public String getName(){
+        return super.getFirstName() + " " + super.getLastName();
+    }
 }
