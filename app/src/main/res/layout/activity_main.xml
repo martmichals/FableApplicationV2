@@ -114,14 +114,15 @@
         android:background="@color/colorWhite"
         android:orientation="horizontal">
 
+
         <Button
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/semibold"
-            android:onClick="searchButtonOnClick"
-            android:text="SEARCH"
+            android:onClick="editProfileOnClick"
+            android:text="PROFILE"
             android:textSize="16dp" />
 
         <Button
@@ -130,18 +131,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/semibold"
-            android:onClick="followedButtonOnClick"
-            android:text="LIST ITEM"
-            android:textSize="16dp" />
-
-        <Button
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/semibold"
-            android:onClick="featuredButtonOnClick"
-            android:text="FEATURED"
+            android:onClick="createListingOnClick"
+            android:text="New Listing"
             android:textSize="16dp" />
 
 

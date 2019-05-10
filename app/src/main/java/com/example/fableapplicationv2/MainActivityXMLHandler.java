@@ -3,6 +3,7 @@ package com.example.fableapplicationv2;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.sip.SipSession;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -33,8 +34,8 @@ public class MainActivityXMLHandler extends AppCompatActivity {
     private TextView mFableTitle;
     private SeekBar mRadiusSeekBar;
     final String radiusLabel = "Radius: ";
-    private int seekBarRadius; // Use this to store updated radius selection
-    private List<CardView>  currentCardsList;
+    private double seekBarRadius; // Use this to store updated radius selection
+    private List<CardView> currentCardsList;
 
     public MainActivityXMLHandler(Context aContext, TextView aFableTitle, LinearLayout aSearchResultsLinearLayout,
                                   LinearLayout aSearchLinearLayout, LinearLayout aFollowedLinearLayout,
@@ -71,10 +72,13 @@ public class MainActivityXMLHandler extends AppCompatActivity {
                 Toast.makeText(mContext, query, Toast.LENGTH_SHORT).show();
                 mFableTitle.setVisibility(View.GONE);
 
+                mSearchResultsLinearLayout.removeAllViews();
+                currentCardsList = new ArrayList<CardView>();
                 //submitQuery(query, seekBarRadius);
                 //gatherQueryResults(query);
                 createCards(query);
                 mSearchView.setQuery(null, false);
+
 
                 return true;
             }
@@ -116,10 +120,10 @@ public class MainActivityXMLHandler extends AppCompatActivity {
             profilePicture.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.test_profile_picture));
 
             //createCard(aSearchResults.get(i).getFirstName(), "Example Farm Description, We sell many greens", 20.5, profilePicture);
-            createCard(aQuery, "Example Farm Description, We sell many greens", 20.5, profilePicture);
+            createCard(aQuery, "Example Farm Description, We sell many greens", seekBarRadius, profilePicture);
         }
 
-        for(int j = 0; j < currentCardsList.size(); j++) {
+        for (int j = 0; j < currentCardsList.size(); j++) {
             mSearchResultsLinearLayout.addView(currentCardsList.get(j));
         }
     }
@@ -131,9 +135,12 @@ public class MainActivityXMLHandler extends AppCompatActivity {
     // https://android--code.blogspot.com/2015/12/android-how-to-create-cardview.html
 
     @SuppressLint("ResourceType")
-    public void createCard(String aFarmName, String aFarmDescription, Double aDistanceAway, ImageView aProfilePicture) {
+    public void createCard(final String aFarmName, String aFarmDescription, final Double aDistanceAway, ImageView aProfilePicture) {
         // Initialize a new CardView
         CardView card = new CardView(mContext);
+
+        card.setClickable(true);
+
 
         // Initialize a new RelativeLayout
         RelativeLayout rl = new RelativeLayout(mContext);
@@ -209,7 +216,7 @@ public class MainActivityXMLHandler extends AppCompatActivity {
         //farmNameTextViewParams.addRule(rl.RIGHT_OF, profilePicture.getId());
         //farmNameTextViewParams.leftMargin = 50;
         //farmNameTextViewParams.gravity = Gravity.CENTER_HORIZONTAL;
-        farmNameTextViewParams.gravity = Gravity.CENTER;
+        farmNameTextViewParams.gravity = Gravity.CENTER_VERTICAL;
         //farmNameTextViewParams.gravity = Gravity.START;
 
 
@@ -217,7 +224,6 @@ public class MainActivityXMLHandler extends AppCompatActivity {
         // Set the layout parameters for the farm name TextView
         //farmNameTextView.setLayoutParams(farmNameTextViewParams);
         //rl.addView(farmNameTextView);
-        nameAndDistanceLayout.addView(farmNameTextView, farmNameTextViewParams);
 
 
         // Initialize a new TextView for the farm's description
@@ -242,11 +248,13 @@ public class MainActivityXMLHandler extends AppCompatActivity {
         // Add farm description TextView to the RelativeLayout
         // Set the layout parameters for the farm description TextView
         //rl.addView(distanceAwayTextView, distanceAwayTextViewParams);
-        distanceAwayTextViewParams.gravity = Gravity.CENTER_HORIZONTAL;
+        distanceAwayTextViewParams.gravity = Gravity.CENTER_VERTICAL;
+        distanceAwayTextViewParams.leftMargin = 20;
         //distanceAwayTextViewParams.gravity = Gravity.END;
-
+        //distanceAwayTextViewParams.gravity = Gravity.END;
+        nameAndDistanceLayout.addView(farmNameTextView, farmNameTextViewParams);
         nameAndDistanceLayout.addView(distanceAwayTextView, distanceAwayTextViewParams);
-
+        nameAndDistanceParams.leftMargin = 50;
 
         rl.addView(nameAndDistanceLayout);
 
@@ -275,8 +283,16 @@ public class MainActivityXMLHandler extends AppCompatActivity {
         // Add the RelativeLayout to the card
         card.addView(rl);
 
+        card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRadiusTextView.setText(aFarmName);
+            }
+        });
+
         // Set an onclick listener for the card, increment
         // each card using a parameter with numbers generated by loop in previous method
+
 
         currentCardsList.add(card);
         // Add the CardView in Search LinearLayout
